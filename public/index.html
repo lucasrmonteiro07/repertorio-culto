@@ -1118,8 +1118,25 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 musicaElement.querySelector('.musica-drive').value = musica.drive || '';
                 musicaElement.querySelector('.musica-tom-original').value = musica.tomOriginal;
                 musicaElement.querySelector('.musica-tom-desejado').value = musica.tomDesejado;
-                musicaElement.querySelector('.musica-estrutura').value = musica.estrutura || '';
                 musicaElement.querySelector('.musica-cifras').value = musica.cifrasOriginais;
+                
+                // Parsear a estrutura em partes separadas
+                const estruturaLinhas = (musica.estrutura || '').split('\n');
+                estruturaLinhas.forEach(linha => {
+                    if (linha.startsWith('INTRO:')) {
+                        musicaElement.querySelector('.musica-estrutura-intro').value = linha.replace('INTRO:', '').trim();
+                    } else if (linha.startsWith('VERSO 1:')) {
+                        musicaElement.querySelector('.musica-estrutura-verso1').value = linha.replace('VERSO 1:', '').trim();
+                    } else if (linha.startsWith('REFRÃO:')) {
+                        musicaElement.querySelector('.musica-estrutura-refrão').value = linha.replace('REFRÃO:', '').trim();
+                    } else if (linha.startsWith('VERSO 2:')) {
+                        musicaElement.querySelector('.musica-estrutura-verso2').value = linha.replace('VERSO 2:', '').trim();
+                    } else if (linha.startsWith('PONTE:')) {
+                        musicaElement.querySelector('.musica-estrutura-ponte').value = linha.replace('PONTE:', '').trim();
+                    } else if (linha.startsWith('FINAL:')) {
+                        musicaElement.querySelector('.musica-estrutura-final').value = linha.replace('FINAL:', '').trim();
+                    }
+                });
             });
         }
 
