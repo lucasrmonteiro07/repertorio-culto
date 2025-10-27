@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repertório de Culto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #0a0a0a;
+            border-radius: 20px;
+            border: 1px solid #1a1a1a;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.8em;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        h2, h3 {
+            font-weight: 700;
+        }
+
+        /* Páginas */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Lista de Cultos (Página Inicial) */
+        .culto-card-lista {
+            background: #111111;
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #222222;
+        }
+
+        .culto-card-lista:hover {
+            transform: translateY(-2px);
+            border-color: #ffffff;
+            background: #151515;
+        }
+
+        .culto-card-lista .data-grande {
+            font-size: 1.8em;
+            font-weight: 300;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .culto-card-lista .info-resumo {
+            font-size: 1em;
+            opacity: 0.6;
+            font-weight: 300;
+        }
+
+        .culto-card-lista .ministro-nome {
+            font-size: 1.1em;
+            margin-top: 12px;
+            font-weight: 300;
+            opacity: 0.8;
+        }
+
+        .culto-card-lista .total-musicas {
+            display: inline-block;
+            background: #1a1a1a;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-top: 12px;
+            font-size: 0.9em;
+            border: 1px solid #2a2a2a;
+        }
+
+        /* Botão flutuante */
+        .btn-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #ffffff;
+            color: #000000;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.2);
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-weight: 300;
+        }
+
+        .btn-float:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(255,255,255,0.3);
+        }
+
+        /* Formulário */
+        .culto-form {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        input[type="date"],
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #222222;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #0a0a0a;
+            color: #ffffff;
+            font-weight: 300;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #ffffff;
+            background: #111111;
+        }
+
+        textarea {
+            min-height: 150px;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .musica-item {
+            background: #111111;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #222222;
+        }
+
+        .musica-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .musica-titulo {
+            font-size: 1.2em;
+            font-weight: 300;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .tom-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .tom-atual {
+            font-weight: 300;
+            color: #ffffff;
+            font-size: 1.1em;
+        }
+
+        button {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.2);
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .btn-danger {
+            background: #1a1a1a;
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .btn-danger:hover {
+            background: #ff4444;
+            color: #000000;
+        }
+
+        .estrutura-section {
+            margin-top: 16px;
+        }
+
+        .estrutura-tag {
+            display: inline-block;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 13px;
+            border: 1px solid #2a2a2a;
+            font-weight: 300;
+        }
+
+        .cifras-display {
+            background: #0a0a0a;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            white-space: pre-wrap;
+            margin-top: 16px;
+            border: 1px solid #1a1a1a;
+            line-height: 1.8;
+            color: #cccccc;
+        }
+
+        .cifras-display strong {
+            color: #ffffff;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cifra-nota {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .cultos-lista {
+            margin-top: 30px;
+        }
+
+        .culto-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .culto-data {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .btn-adicionar-musica {
+            margin-top: 15px;
+            background: #28a745;
+        }
+
+        .btn-adicionar-musica:hover {
+            background: #218838;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        /* Seção de Músicos */
+        .musicos-section {
+            background: #111111;
+            padding: 24px;
+            border-radius: 16px;
+            margin-top: 24px;
+            border: 1px solid #222222;
+        }
+
+        .musicos-section h3 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: 300;
+            font-size: 1.2em;
+            letter-spacing: -0.5px;
+        }
+
+        .musico-badge {
+            display: inline-block;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 20px;
+            margin: 6px;
+            font-size: 14px;
+            border: 1px solid #2a2a2a;
+            font-weight: 300;
+        }
+
+        /* Página de Detalhes */
+        .header-detalhes {
+            background: #111111;
+            color: white;
+            padding: 32px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            border: 1px solid #222222;
+        }
+
+        .header-detalhes h2 {
+            font-size: 2em;
+            margin-bottom: 12px;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
+
+        .header-detalhes .ministro {
+            font-size: 1.2em;
+            margin-top: 12px;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .musica-detalhes-card {
+            background: #111111;
+            padding: 28px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #222222;
+        }
+
+        .musica-detalhes-card h3 {
+            color: #ffffff;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
+
+        .info-musica {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            background: #0a0a0a;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid #1a1a1a;
+        }
+
+        .info-item label {
+            font-size: 0.75em;
+            color: #666666;
+            display: block;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .info-item .valor {
+            font-size: 1.3em;
+            font-weight: 300;
+            color: #ffffff;
+        }
+
+        .btn-voltar {
+            background: #1a1a1a;
+            color: #ffffff;
+            margin-bottom: 24px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .btn-voltar:hover {
+            background: #222222;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666666;
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 24px;
+            opacity: 0.2;
+        }
+
+        .empty-state h2 {
+            font-weight: 300;
+            margin-bottom: 8px;
+            font-size: 1.8em;
+            letter-spacing: -0.5px;
+        }
+
+        .empty-state p {
+            font-weight: 300;
+            opacity: 0.6;
+        }
+
+        .youtube-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 400;
+            display: inline-block;
+            margin-top: 8px;
+            padding: 10px 18px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            border: 1px solid #2a2a2a;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.15);
+        }
+
+        .btn-adicionar-musica {
+            margin-top: 20px;
+            background: #1a1a1a;
+            color: #ffffff;
+            border: 1px solid #2a2a2a;
+        }
+
+        .btn-adicionar-musica:hover {
+            background: #222222;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .info-musica {
+                flex-direction: column;
+            }
+
+            .btn-float {
+                bottom: 20px;
+                right: 20px;
+                width: 56px;
+                height: 56px;
+                font-size: 28px;
+            }
+
+            .container {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- PÁGINA INICIAL: LISTA DE CULTOS -->
+        <div id="paginaInicial" class="page active">
+            <h1>🎵 Repertório de Cultos</h1>
+            
+            <div id="listagemCultos">
+                <!-- Cultos serão inseridos aqui -->
+            </div>
+        </div>
+
+        <!-- PÁGINA: NOVO/EDITAR CULTO -->
+        <div id="paginaFormulario" class="page">
+            <button class="btn-voltar" onclick="voltarParaInicial()">← Voltar</button>
+            
+            <h1 id="tituloFormulario">Novo Culto</h1>
+
+            <div class="culto-form">
+                <input type="hidden" id="cultoId">
+                
+                <div class="form-group">
+                    <label for="nomeCulto">Nome do Culto:</label>
+                    <input type="text" id="nomeCulto" placeholder="Ex: Culto de Celebração, Culto da Família, Culto de Adoração">
+                </div>
+
+                <div class="form-group">
+                    <label for="dataCulto">Data do Culto:</label>
+                    <input type="date" id="dataCulto" onclick="this.showPicker()">
+                </div>
+
+                <div class="form-group">
+                    <label for="temaLouvor">Tema Principal do Louvor:</label>
+                    <input type="text" id="temaLouvor" placeholder="Ex: Gratidão, Avivamento, Adoração ao Senhor, Fé e Esperança">
+                </div>
+
+                <div class="form-group">
+                    <label for="ministroLouvor">Ministro de Louvor Responsável:</label>
+                    <input type="text" id="ministroLouvor" placeholder="Nome do ministro de louvor">
+                </div>
+
+                <div class="musicos-section">
+                    <h3>🎸 Músicos do Culto</h3>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label for="musicoBaixo">Baixo:</label>
+                            <input type="text" id="musicoBaixo" placeholder="Nome do baixista">
+                        </div>
+                        <div class="form-group">
+                            <label for="musicoGuitarra">Guitarra:</label>
+                            <input type="text" id="musicoGuitarra" placeholder="Nome do guitarrista">
+                        </div>
+                        <div class="form-group">
+                            <label for="musicoViolao">Violão:</label>
+                            <input type="text" id="musicoViolao" placeholder="Nome do violonista">
+                        </div>
+                        <div class="form-group">
+                            <label for="musicoTeclado">Teclado:</label>
+                            <input type="text" id="musicoTeclado" placeholder="Nome do tecladista">
+                        </div>
+                        <div class="form-group">
+                            <label for="musicoBateria">Bateria:</label>
+                            <input type="text" id="musicoBateria" placeholder="Nome do baterista">
+                        </div>
+                        <div class="form-group">
+                            <label for="musicoSopro">Sopro:</label>
+                            <input type="text" id="musicoSopro" placeholder="Nome do instrumentista">
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: #667eea;">Músicas do Repertório</h3>
+
+                <div id="musicasContainer">
+                    <!-- Músicas serão inseridas aqui -->
+                </div>
+
+                <button class="btn-adicionar-musica" onclick="adicionarMusica()">+ Adicionar Música</button>
+
+                <div class="acoes">
+                    <button onclick="salvarCulto()">Salvar Culto</button>
+                    <button onclick="limparFormulario()" style="background: #6c757d;">Limpar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PÁGINA: DETALHES DO CULTO -->
+        <div id="paginaDetalhes" class="page">
+            <button class="btn-voltar" onclick="voltarParaInicial()">← Voltar</button>
+            
+            <div id="conteudoDetalhes">
+                <!-- Detalhes serão inseridos aqui -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão flutuante para adicionar novo culto -->
+    <button class="btn-float" onclick="irParaFormulario()" title="Novo Culto">+</button>
+
+    <script>
+        let musicaIndex = 0;
+        let cultos = JSON.parse(localStorage.getItem('cultos')) || [];
+        let cultoAtual = null;
+
+        const notas = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+        // Navegação entre páginas
+        function mostrarPagina(paginaId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(paginaId).classList.add('active');
+        }
+
+        function voltarParaInicial() {
+            mostrarPagina('paginaInicial');
+            limparFormulario();
+        }
+
+        function irParaFormulario() {
+            mostrarPagina('paginaFormulario');
+            document.getElementById('tituloFormulario').textContent = 'Novo Culto';
+            limparFormulario();
+            adicionarMusica();
+        }
+
+        function verDetalhesCulto(id) {
+            const culto = cultos.find(c => c.id === id);
+            if (!culto) return;
+
+            cultoAtual = culto;
+            mostrarPagina('paginaDetalhes');
+            exibirDetalhes(culto);
+        }
+
+        // Exibir detalhes do culto
+        function exibirDetalhes(culto) {
+            const dataFormatada = new Date(culto.data + 'T00:00:00').toLocaleDateString('pt-BR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const musicosArray = [];
+            if (culto.musicos.baixo) musicosArray.push(`🎸 Baixo: ${culto.musicos.baixo}`);
+            if (culto.musicos.guitarra) musicosArray.push(`🎸 Guitarra: ${culto.musicos.guitarra}`);
+            if (culto.musicos.violao) musicosArray.push(`🎸 Violão: ${culto.musicos.violao}`);
+            if (culto.musicos.teclado) musicosArray.push(`🎹 Teclado: ${culto.musicos.teclado}`);
+            if (culto.musicos.bateria) musicosArray.push(`🥁 Bateria: ${culto.musicos.bateria}`);
+            if (culto.musicos.sopro) musicosArray.push(`🎺 Sopro: ${culto.musicos.sopro}`);
+
+            const musicosHTML = musicosArray.length > 0 
+                ? `<div class="musicos-section">
+                    <h3>Músicos</h3>
+                    ${musicosArray.map(m => `<span class="musico-badge">${m}</span>`).join('')}
+                   </div>`
+                : '';
+
+            const musicasHTML = culto.musicas.map((musica, idx) => `
+                <div class="musica-detalhes-card">
+                    <h3>${idx + 1}. ${musica.nome}</h3>
+                    
+                    <div class="info-musica">
+                        <div class="info-item">
+                            <label>Tom Original</label>
+                            <div class="valor">${musica.tomOriginal}</div>
+                        </div>
+                        <div class="info-item">
+                            <label>Tom Transposto</label>
+                            <div class="valor">${musica.tomDesejado}</div>
+                        </div>
+                    </div>
+
+                    ${(musica.youtube || musica.spotify || musica.drive) ? `
+                    <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+                        ${musica.youtube ? `<a href="${musica.youtube}" target="_blank" class="youtube-link" style="background: #FF0000; border-color: #FF0000; color: white;">▶ YouTube</a>` : ''}
+                        ${musica.spotify ? `<a href="${musica.spotify}" target="_blank" class="youtube-link" style="background: #1DB954; border-color: #1DB954; color: white;">♫ Spotify</a>` : ''}
+                        ${musica.drive ? `<a href="${musica.drive}" target="_blank" class="youtube-link" style="background: #4285F4; border-color: #4285F4; color: white;">📁 Drive</a>` : ''}
+                    </div>
+                    ` : ''}
+
+                    ${musica.estruturaTransposta ? `
+                        <div class="cifras-display" style="display: block; margin-top: 15px;">
+                            <strong style="color: #ffffff;">ESTRUTURA:</strong><br><br>
+                            ${musica.estruturaTransposta.replace(/\[([^\]]+)\]/g, '<span class="cifra-nota">$1</span>')}
+                        </div>
+                    ` : ''}
+
+                    ${musica.cifrasTranspostas ? `
+                        <div class="cifras-display" style="display: block; margin-top: 15px;">
+                            <strong style="color: #ffffff;">CIFRAS:</strong><br><br>
+                            ${musica.cifrasTranspostas.replace(/\[([^\]]+)\]/g, '<span class="cifra-nota">$1</span>')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            const conteudo = `
+                <div class="header-detalhes">
+                    ${culto.nome ? `<div style="font-size: 1.2em; opacity: 0.7; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; font-weight: 300;">Culto</div>` : ''}
+                    ${culto.nome ? `<h2>${culto.nome}</h2>` : ''}
+                    <div style="font-size: 1.3em; margin-top: 8px; opacity: 0.8;">${dataFormatada}</div>
+                    ${culto.tema ? `<div style="font-size: 1.2em; margin-top: 16px; padding: 12px 20px; background: #1a1a1a; border-radius: 12px; border: 1px solid #2a2a2a;">📖 Tema: ${culto.tema}</div>` : ''}
+                    ${culto.ministro ? `<div class="ministro">🎤 Ministro de Louvor: ${culto.ministro}</div>` : ''}
+                    <div style="margin-top: 15px; opacity: 0.9;">
+                        ${culto.musicas.length} música${culto.musicas.length !== 1 ? 's' : ''} no repertório
+                    </div>
+                </div>
+
+                ${musicosHTML}
+
+                <div style="margin-top: 30px;">
+                    <h2 style="color: #ffffff; margin-bottom: 20px; font-weight: 300; font-size: 1.8em; letter-spacing: -0.5px;">Músicas</h2>
+                    ${musicasHTML}
+                </div>
+
+                <div class="acoes" style="margin-top: 30px;">
+                    <button onclick="editarCulto(${culto.id})">Editar Culto</button>
+                    <button class="btn-danger" onclick="deletarCulto(${culto.id})">Deletar Culto</button>
+                </div>
+            `;
+
+            document.getElementById('conteudoDetalhes').innerHTML = conteudo;
+        }
+
+        // Listagem de cultos na página inicial
+        function exibirListagemCultos() {
+            const container = document.getElementById('listagemCultos');
+            
+            if (cultos.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+                        </svg>
+                        <h2>Nenhum culto cadastrado</h2>
+                        <p>Clique no botão + para adicionar seu primeiro culto</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Ordenar por data (mais recente primeiro)
+            cultos.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+            container.innerHTML = cultos.map(culto => {
+                const dataFormatada = new Date(culto.data + 'T00:00:00').toLocaleDateString('pt-BR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                return `
+                    <div class="culto-card-lista" onclick="verDetalhesCulto(${culto.id})">
+                        ${culto.nome ? `<div style="font-size: 1.4em; font-weight: 400; margin-bottom: 8px; letter-spacing: -0.3px;">${culto.nome}</div>` : ''}
+                        <div class="data-grande">${dataFormatada}</div>
+                        ${culto.tema ? `<div style="font-size: 1em; margin-top: 12px; opacity: 0.7; font-style: italic;">📖 ${culto.tema}</div>` : ''}
+                        ${culto.ministro ? `<div class="ministro-nome">🎤 ${culto.ministro}</div>` : ''}
+                        <div class="info-resumo">
+                            <span class="total-musicas">${culto.musicas.length} música${culto.musicas.length !== 1 ? 's' : ''}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Adicionar música ao formulário
+        function adicionarMusica() {
+            const container = document.getElementById('musicasContainer');
+            const novaMusicaHTML = `
+                <div class="musica-item" data-musica-index="${musicaIndex}">
+                    <div class="musica-header">
+                        <h3>Música ${musicaIndex + 1}</h3>
+                        <button type="button" class="btn-small btn-danger" onclick="removerMusica(${musicaIndex})">Remover</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nome da Música:</label>
+                        <input type="text" class="musica-nome" placeholder="Ex: Rompendo em Fé">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Link do YouTube:</label>
+                        <input type="text" class="musica-youtube" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Link do Spotify:</label>
+                            <input type="text" class="musica-spotify" placeholder="https://open.spotify.com/track/...">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Link do Google Drive:</label>
+                            <input type="text" class="musica-drive" placeholder="https://drive.google.com/file/d/...">
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Tom Original:</label>
+                            <select class="musica-tom-original">
+                                <option value="C">C (Dó)</option>
+                                <option value="C#">C# (Dó#)</option>
+                                <option value="D">D (Ré)</option>
+                                <option value="D#">D# (Ré#)</option>
+                                <option value="E">E (Mi)</option>
+                                <option value="F">F (Fá)</option>
+                                <option value="F#">F# (Fá#)</option>
+                                <option value="G">G (Sol)</option>
+                                <option value="G#">G# (Sol#)</option>
+                                <option value="A">A (Lá)</option>
+                                <option value="A#">A# (Lá#)</option>
+                                <option value="B">B (Si)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tom Desejado:</label>
+                            <select class="musica-tom-desejado">
+                                <option value="C">C (Dó)</option>
+                                <option value="C#">C# (Dó#)</option>
+                                <option value="D">D (Ré)</option>
+                                <option value="D#">D# (Ré#)</option>
+                                <option value="E">E (Mi)</option>
+                                <option value="F">F (Fá)</option>
+                                <option value="F#">F# (Fá#)</option>
+                                <option value="G">G (Sol)</option>
+                                <option value="G#">G# (Sol#)</option>
+                                <option value="A">A (Lá)</option>
+                                <option value="A#">A# (Lá#)</option>
+                                <option value="B">B (Si)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estrutura da Música (pode incluir cifras entre colchetes):</label>
+                        <textarea class="musica-estrutura" placeholder="Exemplo:
+INTRO: [C] [Am] [F] [G]
+VERSO 1: [C] [G] [Am] [F]
+REFRÃO: [F] [G] [C] [Am]
+VERSO 2: [C] [G] [Am] [F]
+PONTE: [Dm] [G] [C] [Am]" style="min-height: 120px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cifras (coloque as cifras entre colchetes, ex: [C] [Am] [F] [G]):</label>
+                        <textarea class="musica-cifras" placeholder="Exemplo:
+[C]Rompendo em [Am]fé, rompendo em [F]fé
+Eu vou rom[G]pendo em [C]fé
+
+Intro: [C] [Am] [F] [G]
+Verso 1: [C] [G] [Am] [F]"></textarea>
+                    </div>
+
+                    <button type="button" class="btn-small" onclick="transpor(${musicaIndex})">Transpor Cifras</button>
+                    
+                    <div class="cifras-display" style="display: none;"></div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', novaMusicaHTML);
+            musicaIndex++;
+        }
+
+        function removerMusica(index) {
+            const musica = document.querySelector(`[data-musica-index="${index}"]`);
+            if (musica) {
+                musica.remove();
+            }
+        }
+
+        // Transposição de cifras
+        function transporNota(nota, semitons) {
+            const indiceAtual = notas.indexOf(nota);
+            if (indiceAtual === -1) return nota;
+            
+            let novoIndice = (indiceAtual + semitons) % 12;
+            if (novoIndice < 0) novoIndice += 12;
+            
+            return notas[novoIndice];
+        }
+
+        function transporCifra(cifra, semitons) {
+            return cifra.replace(/\[([A-G][#b]?(?:m|sus|dim|aug|maj|add|°|º)?[0-9]?)\]/g, (match, acorde) => {
+                let notaBase = acorde[0];
+                let modificador = '';
+                
+                if (acorde[1] === '#' || acorde[1] === 'b') {
+                    notaBase += acorde[1];
+                    modificador = acorde.slice(2);
+                } else {
+                    modificador = acorde.slice(1);
+                }
+                
+                if (notaBase.includes('b')) {
+                    const notaIndex = notas.indexOf(notaBase.replace('b', '#'));
+                    if (notaIndex !== -1) {
+                        notaBase = notas[notaIndex];
+                    }
+                }
+                
+                const notaTransposta = transporNota(notaBase, semitons);
+                return `[${notaTransposta}${modificador}]`;
+            });
+        }
+
+        function transpor(index) {
+            const musica = document.querySelector(`[data-musica-index="${index}"]`);
+            const tomOriginal = musica.querySelector('.musica-tom-original').value;
+            const tomDesejado = musica.querySelector('.musica-tom-desejado').value;
+            const cifrasTexto = musica.querySelector('.musica-cifras').value;
+            const estruturaTexto = musica.querySelector('.musica-estrutura').value;
+            const cifrasDisplay = musica.querySelector('.cifras-display');
+
+            const indiceOriginal = notas.indexOf(tomOriginal);
+            const indiceDesejado = notas.indexOf(tomDesejado);
+            const semitons = indiceDesejado - indiceOriginal;
+
+            // Transpor cifras do campo principal
+            const cifrasTranspostas = transporCifra(cifrasTexto, semitons);
+            
+            // Transpor cifras da estrutura
+            const estruturaTransposta = transporCifra(estruturaTexto, semitons);
+            
+            // Combinar estrutura e cifras
+            let textoCompleto = '';
+            if (estruturaTransposta) {
+                textoCompleto += '<strong style="color: #ffffff;">ESTRUTURA:</strong>\n' + estruturaTransposta + '\n\n';
+            }
+            if (cifrasTranspostas) {
+                textoCompleto += '<strong style="color: #ffffff;">CIFRAS:</strong>\n' + cifrasTranspostas;
+            }
+            
+            // Destaca as cifras em branco
+            const cifrasFormatadas = textoCompleto.replace(/\[([^\]]+)\]/g, '<span class="cifra-nota">$1</span>');
+            
+            cifrasDisplay.innerHTML = cifrasFormatadas;
+            cifrasDisplay.style.display = 'block';
+        }
+
+        // Salvar culto
+        function salvarCulto() {
+            const data = document.getElementById('dataCulto').value;
+            const nome = document.getElementById('nomeCulto').value;
+            const tema = document.getElementById('temaLouvor').value;
+            const ministro = document.getElementById('ministroLouvor').value;
+            const cultoId = document.getElementById('cultoId').value;
+
+            if (!data) {
+                alert('Por favor, selecione uma data para o culto!');
+                return;
+            }
+
+            const musicos = {
+                baixo: document.getElementById('musicoBaixo').value,
+                guitarra: document.getElementById('musicoGuitarra').value,
+                violao: document.getElementById('musicoViolao').value,
+                teclado: document.getElementById('musicoTeclado').value,
+                bateria: document.getElementById('musicoBateria').value,
+                sopro: document.getElementById('musicoSopro').value
+            };
+
+            const musicas = [];
+            const musicasElements = document.querySelectorAll('.musica-item');
+
+            musicasElements.forEach((musica) => {
+                const nomeMusica = musica.querySelector('.musica-nome').value;
+                const youtube = musica.querySelector('.musica-youtube').value;
+                const spotify = musica.querySelector('.musica-spotify').value;
+                const drive = musica.querySelector('.musica-drive').value;
+                const tomOriginal = musica.querySelector('.musica-tom-original').value;
+                const tomDesejado = musica.querySelector('.musica-tom-desejado').value;
+                const estrutura = musica.querySelector('.musica-estrutura').value;
+                const cifras = musica.querySelector('.musica-cifras').value;
+
+                if (nomeMusica) {
+                    const indiceOriginal = notas.indexOf(tomOriginal);
+                    const indiceDesejado = notas.indexOf(tomDesejado);
+                    const semitons = indiceDesejado - indiceOriginal;
+                    const cifrasTranspostas = transporCifra(cifras, semitons);
+                    const estruturaTransposta = transporCifra(estrutura, semitons);
+
+                    musicas.push({
+                        nome: nomeMusica,
+                        youtube,
+                        spotify,
+                        drive,
+                        tomOriginal,
+                        tomDesejado,
+                        estrutura,
+                        estruturaTransposta,
+                        cifrasOriginais: cifras,
+                        cifrasTranspostas
+                    });
+                }
+            });
+
+            if (musicas.length === 0) {
+                alert('Adicione pelo menos uma música!');
+                return;
+            }
+
+            if (cultoId) {
+                // Editando culto existente
+                const index = cultos.findIndex(c => c.id === parseInt(cultoId));
+                if (index !== -1) {
+                    cultos[index] = {
+                        id: parseInt(cultoId),
+                        data,
+                        nome,
+                        tema,
+                        ministro,
+                        musicos,
+                        musicas
+                    };
+                }
+            } else {
+                // Novo culto
+                const culto = {
+                    id: Date.now(),
+                    data,
+                    nome,
+                    tema,
+                    ministro,
+                    musicos,
+                    musicas
+                };
+                cultos.push(culto);
+            }
+
+            localStorage.setItem('cultos', JSON.stringify(cultos));
+            
+            alert('Culto salvo com sucesso!');
+            voltarParaInicial();
+            exibirListagemCultos();
+        }
+
+        function editarCulto(id) {
+            const culto = cultos.find(c => c.id === id);
+            if (!culto) return;
+
+            mostrarPagina('paginaFormulario');
+            document.getElementById('tituloFormulario').textContent = 'Editar Culto';
+            
+            document.getElementById('cultoId').value = culto.id;
+            document.getElementById('nomeCulto').value = culto.nome || '';
+            document.getElementById('dataCulto').value = culto.data;
+            document.getElementById('temaLouvor').value = culto.tema || '';
+            document.getElementById('ministroLouvor').value = culto.ministro || '';
+            
+            document.getElementById('musicoBaixo').value = culto.musicos.baixo || '';
+            document.getElementById('musicoGuitarra').value = culto.musicos.guitarra || '';
+            document.getElementById('musicoViolao').value = culto.musicos.violao || '';
+            document.getElementById('musicoTeclado').value = culto.musicos.teclado || '';
+            document.getElementById('musicoBateria').value = culto.musicos.bateria || '';
+            document.getElementById('musicoSopro').value = culto.musicos.sopro || '';
+
+            // Limpar container de músicas
+            document.getElementById('musicasContainer').innerHTML = '';
+            musicaIndex = 0;
+
+            // Adicionar músicas existentes
+            culto.musicas.forEach((musica) => {
+                adicionarMusica();
+                const musicaElement = document.querySelector(`[data-musica-index="${musicaIndex - 1}"]`);
+                
+                musicaElement.querySelector('.musica-nome').value = musica.nome;
+                musicaElement.querySelector('.musica-youtube').value = musica.youtube || '';
+                musicaElement.querySelector('.musica-spotify').value = musica.spotify || '';
+                musicaElement.querySelector('.musica-drive').value = musica.drive || '';
+                musicaElement.querySelector('.musica-tom-original').value = musica.tomOriginal;
+                musicaElement.querySelector('.musica-tom-desejado').value = musica.tomDesejado;
+                musicaElement.querySelector('.musica-estrutura').value = musica.estrutura || '';
+                musicaElement.querySelector('.musica-cifras').value = musica.cifrasOriginais;
+            });
+        }
+
+        function deletarCulto(id) {
+            if (confirm('Tem certeza que deseja deletar este culto?')) {
+                cultos = cultos.filter(c => c.id !== id);
+                localStorage.setItem('cultos', JSON.stringify(cultos));
+                voltarParaInicial();
+                exibirListagemCultos();
+            }
+        }
+
+        function limparFormulario() {
+            document.getElementById('cultoId').value = '';
+            document.getElementById('nomeCulto').value = '';
+            document.getElementById('dataCulto').value = '';
+            document.getElementById('temaLouvor').value = '';
+            document.getElementById('ministroLouvor').value = '';
+            document.getElementById('musicoBaixo').value = '';
+            document.getElementById('musicoGuitarra').value = '';
+            document.getElementById('musicoViolao').value = '';
+            document.getElementById('musicoTeclado').value = '';
+            document.getElementById('musicoBateria').value = '';
+            document.getElementById('musicoSopro').value = '';
+            document.getElementById('musicasContainer').innerHTML = '';
+            musicaIndex = 0;
+        }
+
+        // Inicializar
+        exibirListagemCultos();
+    </script>
+</body>
+</html>

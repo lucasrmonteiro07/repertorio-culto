@@ -1,11 +1,10 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "public": "public",
   "routes": [
     {
       "src": "^/(.*)$",
-      "dest": "/public/index.html"
+      "dest": "/index.html"
     }
   ]
 }
