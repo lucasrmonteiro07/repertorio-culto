@@ -1,0 +1,17 @@
+{
+  "name": "repertorio-culto",
+  "version": "1.0.0",
+  "description": "Sistema de gerenciamento de repertório de cultos",
+  "main": "repertorio-culto.html",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": [
+    "culto",
+    "musica",
+    "louvor",
+    "repertorio"
+  ],
+  "author": "",
+  "license": "MIT"
+}
