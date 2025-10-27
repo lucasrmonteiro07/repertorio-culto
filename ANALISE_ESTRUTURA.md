@@ -42,11 +42,11 @@ Nenhum botão direto na página inicial. A interação acontece:
 | **← Voltar** | `voltarParaInicial()` | Retorna à página inicial (sem salvar) |
 
 ### 🔍 Página Detalhes - Botões
-| Botão | Função | Ação |
-|-------|--------|------|
-| **← Voltar** | `voltarParaInicial()` | Retorna à página inicial |
-| **Editar Culto** | `editarCulto(id)` | Carrega culto no formulário para edição |
-| **Deletar Culto** ❌ | `deletarCulto(id)` | Solicita confirmação e remove culto |
+| Botão | Função | Ação | Localização |
+|-------|--------|------|------------|
+| **← Voltar** | `voltarParaInicial()` | Retorna à página inicial | Canto superior esquerdo |
+| **Editar Culto** | `editarCulto(id)` | Carrega culto no formulário para edição | Seção de ações |
+| **Deletar Culto** ❌ | `deletarCulto(id)` | Solicita confirmação e remove culto | Seção de ações (vermelho) |
 
 ### 🎵 Cada Música (dentro do Formulário)
 | Botão | Função | Ação |
