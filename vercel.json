@@ -1,10 +1,11 @@
 {
+  "version": 2,
   "buildCommand": "npm run build || true",
   "outputDirectory": "public",
   "cleanUrls": true,
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "^/(.*)$",
       "dest": "/index.html"
     }
   ]
