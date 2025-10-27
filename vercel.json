@@ -5,7 +5,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/repertorio-culto.html"
+      "dest": "/index.html"
     }
   ]
 }
