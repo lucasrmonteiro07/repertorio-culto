@@ -1393,8 +1393,24 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
             const tomOriginal = musica.querySelector('.musica-tom-original').value;
             const tomDesejado = musica.querySelector('.musica-tom-desejado').value;
             const cifrasTexto = musica.querySelector('.musica-cifras').value;
-            const estruturaTexto = musica.querySelector('.musica-estrutura').value;
             const cifrasDisplay = musica.querySelector('.cifras-display');
+
+            // Reunir os 6 campos de estrutura
+            const estruturaIntro = musica.querySelector('.musica-estrutura-intro').value || '';
+            const estruturaVerso1 = musica.querySelector('.musica-estrutura-verso1').value || '';
+            const estruturaRefrao = musica.querySelector('.musica-estrutura-refrão').value || '';
+            const estruturaVerso2 = musica.querySelector('.musica-estrutura-verso2').value || '';
+            const estruturaPonte = musica.querySelector('.musica-estrutura-ponte').value || '';
+            const estruturaFinal = musica.querySelector('.musica-estrutura-final').value || '';
+
+            const estruturaTexto = [
+                estruturaIntro,
+                estruturaVerso1,
+                estruturaRefrao,
+                estruturaVerso2,
+                estruturaPonte,
+                estruturaFinal
+            ].filter(s => s).join(' ');
 
             const indiceOriginal = notas.indexOf(tomOriginal);
             const indiceDesejado = notas.indexOf(tomDesejado);
