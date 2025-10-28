@@ -1054,15 +1054,15 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 const estruturaPonte = musica.querySelector('.musica-estrutura-ponte').value;
                 const estruturaFinal = musica.querySelector('.musica-estrutura-final').value;
 
-                // Montar a estrutura completa com quebras de linha
+                // Montar a estrutura junta (apenas cifras)
                 const estrutura = [
-                    estruturaIntro ? `INTRO: ${estruturaIntro}` : '',
-                    estruturaVerso1 ? `VERSO 1: ${estruturaVerso1}` : '',
-                    estruturaRefrao ? `REFRÃO: ${estruturaRefrao}` : '',
-                    estruturaVerso2 ? `VERSO 2: ${estruturaVerso2}` : '',
-                    estruturaPonte ? `PONTE: ${estruturaPonte}` : '',
-                    estruturaFinal ? `FINAL: ${estruturaFinal}` : ''
-                ].filter(s => s).join('\n');
+                    estruturaIntro,
+                    estruturaVerso1,
+                    estruturaRefrao,
+                    estruturaVerso2,
+                    estruturaPonte,
+                    estruturaFinal
+                ].filter(s => s).join(' ');
 
                 if (nomeMusica) {
                     const indiceOriginal = notas.indexOf(tomOriginal);
@@ -1163,23 +1163,24 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 musicaElement.querySelector('.musica-tom-desejado').value = musica.tomDesejado;
                 musicaElement.querySelector('.musica-cifras').value = musica.cifrasOriginais;
                 
-                // Parsear a estrutura em partes separadas
-                const estruturaLinhas = (musica.estrutura || '').split('\n');
-                estruturaLinhas.forEach(linha => {
-                    if (linha.startsWith('INTRO:')) {
-                        musicaElement.querySelector('.musica-estrutura-intro').value = linha.replace('INTRO:', '').trim();
-                    } else if (linha.startsWith('VERSO 1:')) {
-                        musicaElement.querySelector('.musica-estrutura-verso1').value = linha.replace('VERSO 1:', '').trim();
-                    } else if (linha.startsWith('REFRÃO:')) {
-                        musicaElement.querySelector('.musica-estrutura-refrão').value = linha.replace('REFRÃO:', '').trim();
-                    } else if (linha.startsWith('VERSO 2:')) {
-                        musicaElement.querySelector('.musica-estrutura-verso2').value = linha.replace('VERSO 2:', '').trim();
-                    } else if (linha.startsWith('PONTE:')) {
-                        musicaElement.querySelector('.musica-estrutura-ponte').value = linha.replace('PONTE:', '').trim();
-                    } else if (linha.startsWith('FINAL:')) {
-                        musicaElement.querySelector('.musica-estrutura-final').value = linha.replace('FINAL:', '').trim();
-                    }
-                });
+                // Distribuir a estrutura entre os 6 campos
+                // Pega a estrutura e divide em partes (cada parte é uma seção)
+                const partes = (musica.estrutura || '').trim().split(/\s+/);
+                
+                // Distribuir cifras entre os campos (aproximadamente igual)
+                const porCampo = Math.ceil(partes.length / 6);
+                musicaElement.querySelector('.musica-estrutura-intro').value = 
+                    partes.slice(0, porCampo).join(' ');
+                musicaElement.querySelector('.musica-estrutura-verso1').value = 
+                    partes.slice(porCampo, porCampo * 2).join(' ');
+                musicaElement.querySelector('.musica-estrutura-refrão').value = 
+                    partes.slice(porCampo * 2, porCampo * 3).join(' ');
+                musicaElement.querySelector('.musica-estrutura-verso2').value = 
+                    partes.slice(porCampo * 3, porCampo * 4).join(' ');
+                musicaElement.querySelector('.musica-estrutura-ponte').value = 
+                    partes.slice(porCampo * 4, porCampo * 5).join(' ');
+                musicaElement.querySelector('.musica-estrutura-final').value = 
+                    partes.slice(porCampo * 5).join(' ');
             });
         }
 

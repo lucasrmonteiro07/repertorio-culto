@@ -882,13 +882,39 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Estrutura da Música (pode incluir cifras entre colchetes):</label>
-                        <textarea class="musica-estrutura" placeholder="Exemplo:
-INTRO: [C] [Am] [F] [G]
-VERSO 1: [C] [G] [Am] [F]
-REFRÃO: [F] [G] [C] [Am]
-VERSO 2: [C] [G] [Am] [F]
-PONTE: [Dm] [G] [C] [Am]" style="min-height: 120px;"></textarea>
+                        <label style="margin-bottom: 15px; display: block;">📐 Estrutura da Música (Cifras entre colchetes):</label>
+                        <div style="background: #0a0a0a; padding: 15px; border-radius: 12px; border: 1px solid #1a1a1a;">
+                            <div class="grid-2" style="margin-bottom: 15px;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 0.85em;">INTRO:</label>
+                                    <input type="text" class="musica-estrutura-intro" placeholder="Ex: [C] [Am] [F] [G]">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 0.85em;">VERSO 1:</label>
+                                    <input type="text" class="musica-estrutura-verso1" placeholder="Ex: [C] [G] [Am] [F]">
+                                </div>
+                            </div>
+                            <div class="grid-2" style="margin-bottom: 15px;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 0.85em;">REFRÃO:</label>
+                                    <input type="text" class="musica-estrutura-refrão" placeholder="Ex: [F] [G] [C] [Am]">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 0.85em;">VERSO 2:</label>
+                                    <input type="text" class="musica-estrutura-verso2" placeholder="Ex: [C] [G] [Am] [F]">
+                                </div>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 0.85em;">PONTE:</label>
+                                    <input type="text" class="musica-estrutura-ponte" placeholder="Ex: [Dm] [G] [C] [Am]">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 0.85em;">FINAL:</label>
+                                    <input type="text" class="musica-estrutura-final" placeholder="Ex: [C] [Am] [F] [G]">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -1018,8 +1044,25 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 const drive = musica.querySelector('.musica-drive').value;
                 const tomOriginal = musica.querySelector('.musica-tom-original').value;
                 const tomDesejado = musica.querySelector('.musica-tom-desejado').value;
-                const estrutura = musica.querySelector('.musica-estrutura').value;
                 const cifras = musica.querySelector('.musica-cifras').value;
+
+                // Capturar os novos campos de estrutura separados
+                const estruturaIntro = musica.querySelector('.musica-estrutura-intro').value;
+                const estruturaVerso1 = musica.querySelector('.musica-estrutura-verso1').value;
+                const estruturaRefrao = musica.querySelector('.musica-estrutura-refrão').value;
+                const estruturaVerso2 = musica.querySelector('.musica-estrutura-verso2').value;
+                const estruturaPonte = musica.querySelector('.musica-estrutura-ponte').value;
+                const estruturaFinal = musica.querySelector('.musica-estrutura-final').value;
+
+                // Montar a estrutura junta (apenas cifras)
+                const estrutura = [
+                    estruturaIntro,
+                    estruturaVerso1,
+                    estruturaRefrao,
+                    estruturaVerso2,
+                    estruturaPonte,
+                    estruturaFinal
+                ].filter(s => s).join(' ');
 
                 if (nomeMusica) {
                     const indiceOriginal = notas.indexOf(tomOriginal);
@@ -1120,23 +1163,24 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 musicaElement.querySelector('.musica-tom-desejado').value = musica.tomDesejado;
                 musicaElement.querySelector('.musica-cifras').value = musica.cifrasOriginais;
                 
-                // Parsear a estrutura em partes separadas
-                const estruturaLinhas = (musica.estrutura || '').split('\n');
-                estruturaLinhas.forEach(linha => {
-                    if (linha.startsWith('INTRO:')) {
-                        musicaElement.querySelector('.musica-estrutura-intro').value = linha.replace('INTRO:', '').trim();
-                    } else if (linha.startsWith('VERSO 1:')) {
-                        musicaElement.querySelector('.musica-estrutura-verso1').value = linha.replace('VERSO 1:', '').trim();
-                    } else if (linha.startsWith('REFRÃO:')) {
-                        musicaElement.querySelector('.musica-estrutura-refrão').value = linha.replace('REFRÃO:', '').trim();
-                    } else if (linha.startsWith('VERSO 2:')) {
-                        musicaElement.querySelector('.musica-estrutura-verso2').value = linha.replace('VERSO 2:', '').trim();
-                    } else if (linha.startsWith('PONTE:')) {
-                        musicaElement.querySelector('.musica-estrutura-ponte').value = linha.replace('PONTE:', '').trim();
-                    } else if (linha.startsWith('FINAL:')) {
-                        musicaElement.querySelector('.musica-estrutura-final').value = linha.replace('FINAL:', '').trim();
-                    }
-                });
+                // Distribuir a estrutura entre os 6 campos
+                // Pega a estrutura e divide em partes (cada parte é uma seção)
+                const partes = (musica.estrutura || '').trim().split(/\s+/);
+                
+                // Distribuir cifras entre os campos (aproximadamente igual)
+                const porCampo = Math.ceil(partes.length / 6);
+                musicaElement.querySelector('.musica-estrutura-intro').value = 
+                    partes.slice(0, porCampo).join(' ');
+                musicaElement.querySelector('.musica-estrutura-verso1').value = 
+                    partes.slice(porCampo, porCampo * 2).join(' ');
+                musicaElement.querySelector('.musica-estrutura-refrão').value = 
+                    partes.slice(porCampo * 2, porCampo * 3).join(' ');
+                musicaElement.querySelector('.musica-estrutura-verso2').value = 
+                    partes.slice(porCampo * 3, porCampo * 4).join(' ');
+                musicaElement.querySelector('.musica-estrutura-ponte').value = 
+                    partes.slice(porCampo * 4, porCampo * 5).join(' ');
+                musicaElement.querySelector('.musica-estrutura-final').value = 
+                    partes.slice(porCampo * 5).join(' ');
             });
         }
 
