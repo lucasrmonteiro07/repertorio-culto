@@ -572,6 +572,30 @@
             outline: none;
             border-color: #2596be;
             box-shadow: 0 0 10px rgba(37, 150, 190, 0.2);
+            background: #1f1f1f;
+        }
+
+        /* Melhorias para input tipo month */
+        .filtro-input[type="month"] {
+            min-width: 160px;
+            padding-left: 8px;
+        }
+
+        .filtro-input[type="month"]::placeholder {
+            color: #666666;
+        }
+
+        /* Input de data com estilo melhorado */
+        .filtro-input[type="date"],
+        .filtro-input[type="month"] {
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Suporte para webkit (Chrome, Safari) */
+        .filtro-input[type="month"]::-webkit-outer-spin-button,
+        .filtro-input[type="month"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
         .btn-limpar {
@@ -645,12 +669,16 @@
                         <option value="">👤 Todos os ministros</option>
                     </select>
 
-                    <input 
-                        type="month" 
-                        id="filtro-mes" 
-                        class="filtro-input"
-                        onchange="executarBusca()"
-                    >
+                    <div style="display: flex; align-items: center; background: #1a1a1a; border: 1px solid #333333; border-radius: 8px; padding: 0 8px;">
+                        <span style="color: #999999; margin-right: 6px; font-size: 1.1em;">📅</span>
+                        <input 
+                            type="month" 
+                            id="filtro-mes" 
+                            class="filtro-input"
+                            style="border: none; background: transparent; flex: 1; padding: 10px 8px; margin: 0;"
+                            onchange="executarBusca()"
+                        >
+                    </div>
 
                     <select id="filtro-tema" class="filtro-select" onchange="executarBusca()">
                         <option value="">📚 Todos os temas</option>
