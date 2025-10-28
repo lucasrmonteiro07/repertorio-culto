@@ -1053,6 +1053,12 @@
         let cultos = JSON.parse(localStorage.getItem('cultos')) || [];
         let cultoAtual = null;
 
+        console.log('=== INICIALIZANDO APP ===');
+        console.log('Cultos carregados do localStorage:', cultos.length);
+        if (cultos.length > 0) {
+            console.log('Dados:', cultos);
+        }
+
         const notas = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
         // Navegação entre páginas
@@ -1076,8 +1082,13 @@
         }
 
         function voltarParaInicial() {
+            // Recarregar dados do localStorage
+            cultos = JSON.parse(localStorage.getItem('cultos')) || [];
+            console.log('Recarregando cultos:', cultos.length);
+            
             mostrarPagina('paginaInicial');
             limparFormulario();
+            exibirListagemCultos();
         }
 
         function irParaFormulario() {
@@ -1339,13 +1350,7 @@
 Eu vou rom[G]pendo em [C]fé
 
 Intro: [C] [Am] [F] [G]
-Verso 1: [C] [G] [Am] [F]" oninput="(() => {
-                            const display = this.parentElement.nextElementSibling;
-                            if (this.value.trim() === '') {
-                                display.innerHTML = '';
-                                display.style.display = 'none';
-                            }
-                        })()"></textarea>
+Verso 1: [C] [G] [Am] [F]"></textarea>
                     </div>
                     
                     <div class="cifras-display" style="display: none; margin-top: 20px; padding: 15px; background: #0a1f3f; border-left: 4px solid #2596be; border-radius: 8px; color: #ffffff; white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;"></div>
