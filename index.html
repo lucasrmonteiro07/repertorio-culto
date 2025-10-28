@@ -1382,8 +1382,10 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
             try {
                 if (!cifra) return cifra;
                 
-                return cifra.replace(/\[([A-G][#b]?(?:m|sus|dim|aug|maj|add|°|º)?[0-9]?)\]/g, (match, acorde) => {
+                // Regex melhorado para capturar accordes complexos como F7M, C9, G7(4), etc.
+                return cifra.replace(/\[([A-G][#b]?[^[\]]*?)\]/g, (match, acorde) => {
                     try {
+                        // Extrair a nota base (primeira letra + # ou b se houver)
                         let notaBase = acorde[0];
                         let modificador = '';
                         
@@ -1394,6 +1396,7 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                             modificador = acorde.slice(1);
                         }
                         
+                        // Converter b em # (enarmonia)
                         if (notaBase.includes('b')) {
                             const notaIndex = notas.indexOf(notaBase.replace('b', '#'));
                             if (notaIndex !== -1) {
@@ -1865,26 +1868,6 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
         // Inicializar
         inicializarFiltros();
         exibirListagemCultos();
-        
-        // DEBUG: Verificar se textarea existe
-        window.addEventListener('click', (e) => {
-            if (e.target.textContent === 'Salvar Culto') {
-                console.clear();
-                console.log('=== ANTES DE SALVAR ===');
-                
-                // Procurar por textarea com classe
-                const textareasComClasse = document.querySelectorAll('.musica-cifras');
-                console.log('Textareas com classe .musica-cifras:', textareasComClasse.length);
-                
-                // Procurar por QUALQUER textarea
-                const todasTextareas = document.querySelectorAll('textarea');
-                console.log('Total de textareas na página:', todasTextareas.length);
-                
-                todasTextareas.forEach((ta, i) => {
-                    console.log(`  Textarea ${i}: classes="${ta.className}", valor="${ta.value.substring(0, 20)}"`);
-                });
-            }
-        });
     </script>
 </body>
 </html>
