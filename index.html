@@ -615,30 +615,51 @@
             transform: scale(1.05);
         }
 
-        /* Botão de Ajuda/Referência */
-        .btn-ajuda {
-            position: absolute;
-            top: 40px;
-            right: 40px;
-            width: 44px;
-            height: 44px;
+        /* Botões Flutuantes */
+        .btn-float {
+            position: fixed;
+            bottom: 30px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
-            background: #2596be;
-            color: #ffffff;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
+            color: #000000;
+            font-size: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.2);
+            cursor: pointer;
+            border: none;
             transition: all 0.3s ease;
-            font-weight: 700;
+            z-index: 1000;
+            font-weight: 300;
         }
 
-        .btn-ajuda:hover {
-            background: #1a7fa0;
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(37, 150, 190, 0.4);
+        /* Botão de Ajuda (Referência) - Ciano */
+        .btn-float.btn-ajuda {
+            right: 110px;
+            background: #00bcd4;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 28px;
+            z-index: 1001;
+        }
+
+        .btn-float.btn-ajuda:hover {
+            background: #00acc1;
+            transform: scale(1.08);
+            box-shadow: 0 6px 30px rgba(0, 188, 212, 0.4);
+        }
+
+        /* Botão de Adição - Branco */
+        .btn-float.btn-adicionar {
+            right: 30px;
+            background: #ffffff;
+        }
+
+        .btn-float.btn-adicionar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(255,255,255,0.3);
         }
 
         .header-title {
@@ -657,12 +678,19 @@
                 flex-direction: column;
             }
 
-            .btn-float {
-                bottom: 20px;
+            .btn-float.btn-ajuda {
+                right: 100px;
+                width: 56px;
+                height: 56px;
+                font-size: 24px;
+            }
+
+            .btn-float.btn-adicionar {
                 right: 20px;
                 width: 56px;
                 height: 56px;
                 font-size: 28px;
+                bottom: 20px;
             }
 
             .container {
@@ -683,10 +711,7 @@
     <div class="container">
         <!-- PÁGINA INICIAL: LISTA DE CULTOS -->
         <div id="paginaInicial" class="page active">
-            <div class="header-title">
-                <h1>🎵 ADORAI APP - Organizador de Repertório</h1>
-                <button class="btn-ajuda" onclick="irParaReferencia()" title="Tabelas de Referência Musical">?</button>
-            </div>
+            <h1>🎵 ADORAI APP - Organizador de Repertório</h1>
             
             <!-- BUSCA E FILTROS -->
             <div class="busca-filtros-container">
@@ -1012,8 +1037,9 @@
         </div>
     </div>
 
-    <!-- Botão flutuante para adicionar novo culto -->
-    <button class="btn-float" onclick="irParaFormulario()" title="Novo Culto">+</button>
+    <!-- Botões flutuantes -->
+    <button class="btn-float btn-ajuda" onclick="irParaReferencia()" title="Tabelas de Referência Musical">?</button>
+    <button class="btn-float btn-adicionar" onclick="irParaFormulario()" title="Novo Culto">+</button>
 
     <script>
         let musicaIndex = 0;
