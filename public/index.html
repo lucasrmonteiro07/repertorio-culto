@@ -1513,6 +1513,15 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 console.log('Número de músicas encontradas:', musicasElements.length);
 
                 musicasElements.forEach((musica, idx) => {
+                    console.log(`\n--- Analisando Música ${idx + 1} ---`);
+                    console.log('Elemento .musica-item encontrado:', musica ? 'SIM' : 'NÃO');
+                    
+                    // Debug detalhado da textarea
+                    const textareaElement = musica.querySelector('.musica-cifras');
+                    console.log('Elemento .musica-cifras encontrado:', textareaElement ? 'SIM' : 'NÃO');
+                    console.log('Conteúdo da textarea (raw):', textareaElement?.value);
+                    console.log('Tamanho do conteúdo:', textareaElement?.value?.length || 0);
+                    
                     const nomeMusica = musica.querySelector('.musica-nome')?.value || '';
                     const youtube = musica.querySelector('.musica-youtube')?.value || '';
                     const spotify = musica.querySelector('.musica-spotify')?.value || '';
@@ -1526,7 +1535,7 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                     const tessitura = musica.querySelector('.musica-tessitura-ref')?.value || '';
 
                     console.log(`Música ${idx + 1}: ${nomeMusica}`);
-                    console.log(`  - Cifras: ${cifras.substring(0, 50)}${cifras.length > 50 ? '...' : ''}`);
+                    console.log(`  - Cifras capturadas: "${cifras.substring(0, 100)}${cifras.length > 100 ? '...' : ''}"`);
                     console.log(`  - Tom: ${tomOriginal} -> ${tomDesejado}`);
 
                     // Capturar os novos campos de estrutura separados
