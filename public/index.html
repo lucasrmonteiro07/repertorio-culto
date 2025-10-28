@@ -944,6 +944,12 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label>☁️ Link do Terabox (ou outro storage):</label>
+                        <input type="text" class="musica-terabox" placeholder="https://terabox.com/... ou outro link de nuvem">
+                        <small style="color: #888888; margin-top: 4px; display: block;">Google Drive, Terabox, OneDrive, Dropbox, etc.</small>
+                    </div>
+
                     <div class="grid-2">
                         <div class="form-group">
                             <label>Tom Original:</label>
@@ -1349,6 +1355,7 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 const youtube = musica.querySelector('.musica-youtube').value;
                 const spotify = musica.querySelector('.musica-spotify').value;
                 const drive = musica.querySelector('.musica-drive').value;
+                const terabox = musica.querySelector('.musica-terabox').value;
                 const tomOriginal = musica.querySelector('.musica-tom-original').value;
                 const tomDesejado = musica.querySelector('.musica-tom-desejado').value;
                 const cifras = musica.querySelector('.musica-cifras').value;
@@ -1386,6 +1393,7 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                         youtube,
                         spotify,
                         drive,
+                        terabox,
                         tomOriginal,
                         tomDesejado,
                         bpm: bpm || '',
@@ -1472,6 +1480,7 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 musicaElement.querySelector('.musica-youtube').value = musica.youtube || '';
                 musicaElement.querySelector('.musica-spotify').value = musica.spotify || '';
                 musicaElement.querySelector('.musica-drive').value = musica.drive || '';
+                musicaElement.querySelector('.musica-terabox').value = musica.terabox || '';
                 musicaElement.querySelector('.musica-tom-original').value = musica.tomOriginal;
                 musicaElement.querySelector('.musica-tom-desejado').value = musica.tomDesejado;
                 musicaElement.querySelector('.musica-bpm').value = musica.bpm || '';
