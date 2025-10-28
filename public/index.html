@@ -1382,8 +1382,9 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
             try {
                 if (!cifra) return cifra;
                 
-                // Regex melhorado para capturar accordes complexos como F7M, C9, G7(4), etc.
-                return cifra.replace(/\[([A-G][#b]?[^[\]]*?)\]/g, (match, acorde) => {
+                // Regex para capturar acordes: [Nota com # ou b + qualquer coisa até o ]
+                // Exemplos: [C], [F#7M], [G7(4)], [Bbm7], [C#sus4]
+                return cifra.replace(/\[([A-G][#b]?[^\]]*?)\]/g, (match, acorde) => {
                     try {
                         // Extrair a nota base (primeira letra + # ou b se houver)
                         let notaBase = acorde[0];
