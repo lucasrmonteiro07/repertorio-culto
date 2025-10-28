@@ -991,8 +991,27 @@
                         <input type="number" class="musica-bpm" placeholder="Ex: 120" min="40" max="240">
                     </div>
 
-                    <div class="form-group">
-                        <label style="margin-bottom: 15px; display: block;">📐 Estrutura da Música (Cifras entre colchetes):</label>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>🎤 Versão de Referência:</label>
+                            <input type="text" class="musica-versao-ref" placeholder="Ex: Fernandinho, Hillsong, versão original">
+                            <small style="color: #888888; margin-top: 4px; display: block;">Qual versão/artista você está usando como base?</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>🎵 Tom Recomendado (Tessitura):</label>
+                            <select class="musica-tessitura-ref">
+                                <option value="">-- Selecione --</option>
+                                <option value="soprano">Soprano (C4-C6)</option>
+                                <option value="alto">Alto (F3-F5)</option>
+                                <option value="tenor">Tenor (C3-C5)</option>
+                                <option value="barítono">Barítono (F2-F4)</option>
+                                <option value="baixo">Baixo (E2-E4)</option>
+                                <option value="misto">Misto/Todos</option>
+                            </select>
+                            <small style="color: #888888; margin-top: 4px; display: block;">Qual tessitura é ideal para cantar?</small>
+                        </div>
+                    </div>
                         <div style="background: #0a0a0a; padding: 15px; border-radius: 12px; border: 1px solid #1a1a1a;">
                             <div class="grid-2" style="margin-bottom: 15px;">
                                 <div class="form-group" style="margin-bottom: 0;">
@@ -1211,6 +1230,8 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 const tomDesejado = musica.querySelector('.musica-tom-desejado').value;
                 const cifras = musica.querySelector('.musica-cifras').value;
                 const bpm = musica.querySelector('.musica-bpm').value;
+                const versaoRef = musica.querySelector('.musica-versao-ref').value;
+                const tessitura = musica.querySelector('.musica-tessitura-ref').value;
 
                 // Capturar os novos campos de estrutura separados
                 const estruturaIntro = musica.querySelector('.musica-estrutura-intro').value;
@@ -1245,6 +1266,8 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                         tomOriginal,
                         tomDesejado,
                         bpm: bpm || '',
+                        versaoRef: versaoRef || '',
+                        tessitura: tessitura || '',
                         estrutura,
                         estruturaTransposta,
                         cifrasOriginais: cifras,
@@ -1329,6 +1352,8 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 musicaElement.querySelector('.musica-tom-original').value = musica.tomOriginal;
                 musicaElement.querySelector('.musica-tom-desejado').value = musica.tomDesejado;
                 musicaElement.querySelector('.musica-bpm').value = musica.bpm || '';
+                musicaElement.querySelector('.musica-versao-ref').value = musica.versaoRef || '';
+                musicaElement.querySelector('.musica-tessitura-ref').value = musica.tessitura || '';
                 musicaElement.querySelector('.musica-cifras').value = musica.cifrasOriginais;
                 
                 // Distribuir a estrutura entre os 6 campos
