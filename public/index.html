@@ -1384,8 +1384,12 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 
                 // Regex para capturar acordes: [Nota com # ou b + qualquer coisa até o ]
                 // Exemplos: [C], [F#7M], [G7(4)], [Bbm7], [C#sus4]
-                return cifra.replace(/\[([A-G][#b]?[^\]]*?)\]/g, (match, acorde) => {
+                const regex = /\[([A-G][#b]?[^\]]*)\]/g;
+                
+                return cifra.replace(regex, (match, acorde) => {
                     try {
+                        console.log('Processando acorde:', match, '-> nota base:', acorde);
+                        
                         // Extrair a nota base (primeira letra + # ou b se houver)
                         let notaBase = acorde[0];
                         let modificador = '';
@@ -1397,6 +1401,8 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                             modificador = acorde.slice(1);
                         }
                         
+                        console.log('  notaBase:', notaBase, 'modificador:', modificador);
+                        
                         // Converter b em # (enarmonia)
                         if (notaBase.includes('b')) {
                             const notaIndex = notas.indexOf(notaBase.replace('b', '#'));
@@ -1406,7 +1412,9 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                         }
                         
                         const notaTransposta = transporNota(notaBase, semitons);
-                        return `[${notaTransposta}${modificador}]`;
+                        const resultado = `[${notaTransposta}${modificador}]`;
+                        console.log('  resultado:', resultado);
+                        return resultado;
                     } catch (e) {
                         console.error('Erro ao transpor acorde:', acorde, e);
                         return match;
