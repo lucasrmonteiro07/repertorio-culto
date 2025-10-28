@@ -1339,7 +1339,13 @@
 Eu vou rom[G]pendo em [C]fé
 
 Intro: [C] [Am] [F] [G]
-Verso 1: [C] [G] [Am] [F]"></textarea>
+Verso 1: [C] [G] [Am] [F]" oninput="(() => {
+                            const display = this.parentElement.nextElementSibling;
+                            if (this.value.trim() === '') {
+                                display.innerHTML = '';
+                                display.style.display = 'none';
+                            }
+                        })()"></textarea>
                     </div>
                     
                     <div class="cifras-display" style="display: none; margin-top: 20px; padding: 15px; background: #0a1f3f; border-left: 4px solid #2596be; border-radius: 8px; color: #ffffff; white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;"></div>
@@ -1404,53 +1410,70 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
         }
 
         function transpor(index) {
-            const musica = document.querySelector(`[data-musica-index="${index}"]`);
-            const tomOriginal = musica.querySelector('.musica-tom-original').value;
-            const tomDesejado = musica.querySelector('.musica-tom-desejado').value;
-            const cifrasTexto = musica.querySelector('.musica-cifras').value;
-            const cifrasDisplay = musica.querySelector('.cifras-display');
+            try {
+                const musica = document.querySelector(`[data-musica-index="${index}"]`);
+                if (!musica) return;
+                
+                const tomOriginal = musica.querySelector('.musica-tom-original')?.value || 'C';
+                const tomDesejado = musica.querySelector('.musica-tom-desejado')?.value || 'C';
+                const cifrasTexto = musica.querySelector('.musica-cifras')?.value || '';
+                const cifrasDisplay = musica.querySelector('.cifras-display');
 
-            // Reunir os 6 campos de estrutura
-            const estruturaIntro = musica.querySelector('.musica-estrutura-intro').value || '';
-            const estruturaVerso1 = musica.querySelector('.musica-estrutura-verso1').value || '';
-            const estruturaRefrao = musica.querySelector('.musica-estrutura-refrão').value || '';
-            const estruturaVerso2 = musica.querySelector('.musica-estrutura-verso2').value || '';
-            const estruturaPonte = musica.querySelector('.musica-estrutura-ponte').value || '';
-            const estruturaFinal = musica.querySelector('.musica-estrutura-final').value || '';
+                // Se não há cifras e nem estrutura, esconder a display
+                if (!cifrasTexto) {
+                    if (cifrasDisplay) {
+                        cifrasDisplay.innerHTML = '';
+                        cifrasDisplay.style.display = 'none';
+                    }
+                    return;
+                }
 
-            const estruturaTexto = [
-                estruturaIntro,
-                estruturaVerso1,
-                estruturaRefrao,
-                estruturaVerso2,
-                estruturaPonte,
-                estruturaFinal
-            ].filter(s => s).join(' ');
+                // Reunir os 6 campos de estrutura
+                const estruturaIntro = musica.querySelector('.musica-estrutura-intro')?.value || '';
+                const estruturaVerso1 = musica.querySelector('.musica-estrutura-verso1')?.value || '';
+                const estruturaRefrao = musica.querySelector('.musica-estrutura-refrão')?.value || '';
+                const estruturaVerso2 = musica.querySelector('.musica-estrutura-verso2')?.value || '';
+                const estruturaPonte = musica.querySelector('.musica-estrutura-ponte')?.value || '';
+                const estruturaFinal = musica.querySelector('.musica-estrutura-final')?.value || '';
 
-            const indiceOriginal = notas.indexOf(tomOriginal);
-            const indiceDesejado = notas.indexOf(tomDesejado);
-            const semitons = indiceDesejado - indiceOriginal;
+                const estruturaTexto = [
+                    estruturaIntro,
+                    estruturaVerso1,
+                    estruturaRefrao,
+                    estruturaVerso2,
+                    estruturaPonte,
+                    estruturaFinal
+                ].filter(s => s).join(' ');
 
-            // Transpor cifras do campo principal
-            const cifrasTranspostas = transporCifra(cifrasTexto, semitons);
-            
-            // Transpor cifras da estrutura
-            const estruturaTransposta = transporCifra(estruturaTexto, semitons);
-            
-            // Combinar estrutura e cifras
-            let textoCompleto = '';
-            if (estruturaTransposta) {
-                textoCompleto += '<strong style="color: #ffffff;">ESTRUTURA:</strong>\n' + estruturaTransposta + '\n\n';
+                const indiceOriginal = notas.indexOf(tomOriginal);
+                const indiceDesejado = notas.indexOf(tomDesejado);
+                const semitons = indiceDesejado - indiceOriginal;
+
+                // Transpor cifras do campo principal
+                const cifrasTranspostas = transporCifra(cifrasTexto, semitons);
+                
+                // Transpor cifras da estrutura
+                const estruturaTransposta = transporCifra(estruturaTexto, semitons);
+                
+                // Combinar estrutura e cifras
+                let textoCompleto = '';
+                if (estruturaTransposta) {
+                    textoCompleto += '<strong style="color: #ffffff;">ESTRUTURA:</strong>\n' + estruturaTransposta + '\n\n';
+                }
+                if (cifrasTranspostas) {
+                    textoCompleto += '<strong style="color: #ffffff;">CIFRAS:</strong>\n' + cifrasTranspostas;
+                }
+                
+                // Destaca as cifras em branco
+                const cifrasFormatadas = textoCompleto.replace(/\[([^\]]+)\]/g, '<span class="cifra-nota">$1</span>');
+                
+                if (cifrasDisplay) {
+                    cifrasDisplay.innerHTML = cifrasFormatadas;
+                    cifrasDisplay.style.display = 'block';
+                }
+            } catch (erro) {
+                console.error('Erro em transpor():', erro);
             }
-            if (cifrasTranspostas) {
-                textoCompleto += '<strong style="color: #ffffff;">CIFRAS:</strong>\n' + cifrasTranspostas;
-            }
-            
-            // Destaca as cifras em branco
-            const cifrasFormatadas = textoCompleto.replace(/\[([^\]]+)\]/g, '<span class="cifra-nota">$1</span>');
-            
-            cifrasDisplay.innerHTML = cifrasFormatadas;
-            cifrasDisplay.style.display = 'block';
         }
 
         // Salvar culto
@@ -1461,6 +1484,9 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 const tema = document.getElementById('temaLouvor').value;
                 const ministro = document.getElementById('ministroLouvor').value;
                 const cultoId = document.getElementById('cultoId').value;
+
+                console.log('=== INICIANDO SALVAMENTO ===');
+                console.log('Data:', data, 'Nome:', nome);
 
                 if (!data) {
                     alert('Por favor, selecione uma data para o culto!');
@@ -1479,7 +1505,9 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 const musicas = [];
                 const musicasElements = document.querySelectorAll('.musica-item');
 
-                musicasElements.forEach((musica) => {
+                console.log('Número de músicas encontradas:', musicasElements.length);
+
+                musicasElements.forEach((musica, idx) => {
                     const nomeMusica = musica.querySelector('.musica-nome')?.value || '';
                     const youtube = musica.querySelector('.musica-youtube')?.value || '';
                     const spotify = musica.querySelector('.musica-spotify')?.value || '';
@@ -1491,6 +1519,10 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                     const bpm = musica.querySelector('.musica-bpm')?.value || '';
                     const versaoRef = musica.querySelector('.musica-versao-ref')?.value || '';
                     const tessitura = musica.querySelector('.musica-tessitura-ref')?.value || '';
+
+                    console.log(`Música ${idx + 1}: ${nomeMusica}`);
+                    console.log(`  - Cifras: ${cifras.substring(0, 50)}${cifras.length > 50 ? '...' : ''}`);
+                    console.log(`  - Tom: ${tomOriginal} -> ${tomDesejado}`);
 
                     // Capturar os novos campos de estrutura separados
                     const estruturaIntro = musica.querySelector('.musica-estrutura-intro')?.value || '';
@@ -1515,6 +1547,8 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                         const indiceDesejado = notas.indexOf(tomDesejado);
                         const semitons = indiceDesejado - indiceOriginal;
                         
+                        console.log(`  - Semitons: ${semitons}`);
+                        
                         // Transpor com segurança
                         let cifrasTranspostas = cifras;
                         let estruturaTransposta = estrutura;
@@ -1522,9 +1556,10 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                         if (semitons !== 0 && tomOriginal && tomDesejado) {
                             cifrasTranspostas = transporCifra(cifras, semitons);
                             estruturaTransposta = transporCifra(estrutura, semitons);
+                            console.log(`  - Cifras transpostas: ${cifrasTranspostas.substring(0, 50)}${cifrasTranspostas.length > 50 ? '...' : ''}`);
                         }
 
-                        musicas.push({
+                        const musicaObj = {
                             nome: nomeMusica,
                             youtube,
                             spotify,
@@ -1539,9 +1574,14 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                             estruturaTransposta,
                             cifrasOriginais: cifras,
                             cifrasTranspostas
-                        });
+                        };
+                        
+                        console.log('  - Objeto música criado:', musicaObj);
+                        musicas.push(musicaObj);
                     }
                 });
+
+                console.log('Total de músicas a salvar:', musicas.length);
 
                 if (musicas.length === 0) {
                     alert('Adicione pelo menos uma música!');
@@ -1561,6 +1601,7 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                             musicos,
                             musicas
                         };
+                        console.log('Culto atualizado. ID:', cultoId);
                     }
                 } else {
                     // Novo culto
@@ -1574,15 +1615,20 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                         musicas
                     };
                     cultos.push(culto);
+                    console.log('Novo culto criado. ID:', culto.id);
                 }
 
+                console.log('Salvando no localStorage...');
                 localStorage.setItem('cultos', JSON.stringify(cultos));
+                console.log('✅ Salvo com sucesso!');
+                console.log('Total de cultos no localStorage:', cultos.length);
                 
                 alert('Culto salvo com sucesso!');
                 voltarParaInicial();
                 exibirListagemCultos();
             } catch (erro) {
-                console.error('Erro ao salvar culto:', erro);
+                console.error('❌ ERRO ao salvar culto:', erro);
+                console.error('Stack:', erro.stack);
                 alert('Erro ao salvar: ' + erro.message);
             }
         }
