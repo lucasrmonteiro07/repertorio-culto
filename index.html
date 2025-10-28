@@ -953,6 +953,10 @@
                         </div>
                     </div>
 
+                    <div style="display: flex; gap: 12px; margin-bottom: 15px; align-items: flex-end;">
+                        <button type="button" class="btn-small" style="flex: 1;" onclick="transpor(${musicaIndex})">▶️ Transpor para Novo Tom</button>
+                    </div>
+
                     <div class="form-group">
                         <label>⏱️ BPM (Batidas Por Minuto):</label>
                         <input type="number" class="musica-bpm" placeholder="Ex: 120" min="40" max="240">
@@ -1003,8 +1007,6 @@ Eu vou rom[G]pendo em [C]fé
 Intro: [C] [Am] [F] [G]
 Verso 1: [C] [G] [Am] [F]"></textarea>
                     </div>
-
-                    <button type="button" class="btn-small" onclick="transpor(${musicaIndex})">Transpor Cifras</button>
                     
                     <div style="margin-top: 20px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #2a2a2a;">
                         <h4 style="color: #667eea; margin-bottom: 10px; font-size: 0.95em;">📐 Campo Harmônico - Tabela de Auxílio</h4>
@@ -1063,7 +1065,7 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                         </div>
                     </div>
                     
-                    <div class="cifras-display" style="display: none;"></div>
+                    <div class="cifras-display" style="display: none; margin-top: 20px; padding: 15px; background: #0a1f3f; border-left: 4px solid #2596be; border-radius: 8px; color: #ffffff; white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;"></div>
                 </div>
             `;
             container.insertAdjacentHTML('beforeend', novaMusicaHTML);
