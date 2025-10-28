@@ -1871,10 +1871,17 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
             if (e.target.textContent === 'Salvar Culto') {
                 console.clear();
                 console.log('=== ANTES DE SALVAR ===');
-                const textareas = document.querySelectorAll('.musica-cifras');
-                console.log('Total de textareas encontradas:', textareas.length);
-                textareas.forEach((ta, i) => {
-                    console.log(`Textarea ${i + 1}: "${ta.value.substring(0, 50)}"`);
+                
+                // Procurar por textarea com classe
+                const textareasComClasse = document.querySelectorAll('.musica-cifras');
+                console.log('Textareas com classe .musica-cifras:', textareasComClasse.length);
+                
+                // Procurar por QUALQUER textarea
+                const todasTextareas = document.querySelectorAll('textarea');
+                console.log('Total de textareas na página:', todasTextareas.length);
+                
+                todasTextareas.forEach((ta, i) => {
+                    console.log(`  Textarea ${i}: classes="${ta.className}", valor="${ta.value.substring(0, 20)}"`);
                 });
             }
         });
