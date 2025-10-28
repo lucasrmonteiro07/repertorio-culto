@@ -1464,25 +1464,25 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
             const musicasElements = document.querySelectorAll('.musica-item');
 
             musicasElements.forEach((musica) => {
-                const nomeMusica = musica.querySelector('.musica-nome').value;
-                const youtube = musica.querySelector('.musica-youtube').value;
-                const spotify = musica.querySelector('.musica-spotify').value;
-                const drive = musica.querySelector('.musica-drive').value;
-                const terabox = musica.querySelector('.musica-terabox').value;
-                const tomOriginal = musica.querySelector('.musica-tom-original').value;
-                const tomDesejado = musica.querySelector('.musica-tom-desejado').value;
-                const cifras = musica.querySelector('.musica-cifras').value;
-                const bpm = musica.querySelector('.musica-bpm').value;
-                const versaoRef = musica.querySelector('.musica-versao-ref').value;
-                const tessitura = musica.querySelector('.musica-tessitura-ref').value;
+                const nomeMusica = musica.querySelector('.musica-nome')?.value || '';
+                const youtube = musica.querySelector('.musica-youtube')?.value || '';
+                const spotify = musica.querySelector('.musica-spotify')?.value || '';
+                const drive = musica.querySelector('.musica-drive')?.value || '';
+                const terabox = musica.querySelector('.musica-terabox')?.value || '';
+                const tomOriginal = musica.querySelector('.musica-tom-original')?.value || 'C';
+                const tomDesejado = musica.querySelector('.musica-tom-desejado')?.value || 'C';
+                const cifras = musica.querySelector('.musica-cifras')?.value || '';
+                const bpm = musica.querySelector('.musica-bpm')?.value || '';
+                const versaoRef = musica.querySelector('.musica-versao-ref')?.value || '';
+                const tessitura = musica.querySelector('.musica-tessitura-ref')?.value || '';
 
                 // Capturar os novos campos de estrutura separados
-                const estruturaIntro = musica.querySelector('.musica-estrutura-intro').value;
-                const estruturaVerso1 = musica.querySelector('.musica-estrutura-verso1').value;
-                const estruturaRefrao = musica.querySelector('.musica-estrutura-refrão').value;
-                const estruturaVerso2 = musica.querySelector('.musica-estrutura-verso2').value;
-                const estruturaPonte = musica.querySelector('.musica-estrutura-ponte').value;
-                const estruturaFinal = musica.querySelector('.musica-estrutura-final').value;
+                const estruturaIntro = musica.querySelector('.musica-estrutura-intro')?.value || '';
+                const estruturaVerso1 = musica.querySelector('.musica-estrutura-verso1')?.value || '';
+                const estruturaRefrao = musica.querySelector('.musica-estrutura-refrão')?.value || '';
+                const estruturaVerso2 = musica.querySelector('.musica-estrutura-verso2')?.value || '';
+                const estruturaPonte = musica.querySelector('.musica-estrutura-ponte')?.value || '';
+                const estruturaFinal = musica.querySelector('.musica-estrutura-final')?.value || '';
 
                 // Montar a estrutura junta (apenas cifras)
                 const estrutura = [
@@ -1589,36 +1589,36 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 adicionarMusica();
                 const musicaElement = document.querySelector(`[data-musica-index="${musicaIndex - 1}"]`);
                 
-                musicaElement.querySelector('.musica-nome').value = musica.nome;
+                musicaElement.querySelector('.musica-nome').value = musica.nome || '';
                 musicaElement.querySelector('.musica-youtube').value = musica.youtube || '';
                 musicaElement.querySelector('.musica-spotify').value = musica.spotify || '';
                 musicaElement.querySelector('.musica-drive').value = musica.drive || '';
                 musicaElement.querySelector('.musica-terabox').value = musica.terabox || '';
-                musicaElement.querySelector('.musica-tom-original').value = musica.tomOriginal;
-                musicaElement.querySelector('.musica-tom-desejado').value = musica.tomDesejado;
+                musicaElement.querySelector('.musica-tom-original').value = musica.tomOriginal || 'C';
+                musicaElement.querySelector('.musica-tom-desejado').value = musica.tomDesejado || 'C';
                 musicaElement.querySelector('.musica-bpm').value = musica.bpm || '';
                 musicaElement.querySelector('.musica-versao-ref').value = musica.versaoRef || '';
                 musicaElement.querySelector('.musica-tessitura-ref').value = musica.tessitura || '';
-                musicaElement.querySelector('.musica-cifras').value = musica.cifrasOriginais;
+                musicaElement.querySelector('.musica-cifras').value = musica.cifrasOriginais || '';
                 
                 // Distribuir a estrutura entre os 6 campos
                 // Pega a estrutura e divide em partes (cada parte é uma seção)
-                const partes = (musica.estrutura || '').trim().split(/\s+/);
+                const partes = (musica.estrutura || '').trim().split(/\s+/).filter(s => s);
                 
                 // Distribuir cifras entre os campos (aproximadamente igual)
-                const porCampo = Math.ceil(partes.length / 6);
+                const porCampo = Math.ceil(partes.length / 6) || 0;
                 musicaElement.querySelector('.musica-estrutura-intro').value = 
-                    partes.slice(0, porCampo).join(' ');
+                    partes.slice(0, porCampo).join(' ') || '';
                 musicaElement.querySelector('.musica-estrutura-verso1').value = 
-                    partes.slice(porCampo, porCampo * 2).join(' ');
+                    partes.slice(porCampo, porCampo * 2).join(' ') || '';
                 musicaElement.querySelector('.musica-estrutura-refrão').value = 
-                    partes.slice(porCampo * 2, porCampo * 3).join(' ');
+                    partes.slice(porCampo * 2, porCampo * 3).join(' ') || '';
                 musicaElement.querySelector('.musica-estrutura-verso2').value = 
-                    partes.slice(porCampo * 3, porCampo * 4).join(' ');
+                    partes.slice(porCampo * 3, porCampo * 4).join(' ') || '';
                 musicaElement.querySelector('.musica-estrutura-ponte').value = 
-                    partes.slice(porCampo * 4, porCampo * 5).join(' ');
+                    partes.slice(porCampo * 4, porCampo * 5).join(' ') || '';
                 musicaElement.querySelector('.musica-estrutura-final').value = 
-                    partes.slice(porCampo * 5).join(' ');
+                    partes.slice(porCampo * 5).join(' ') || '';
             });
         }
 
