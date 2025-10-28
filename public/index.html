@@ -1368,27 +1368,39 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
         }
 
         function transporCifra(cifra, semitons) {
-            return cifra.replace(/\[([A-G][#b]?(?:m|sus|dim|aug|maj|add|°|º)?[0-9]?)\]/g, (match, acorde) => {
-                let notaBase = acorde[0];
-                let modificador = '';
+            try {
+                if (!cifra) return cifra;
                 
-                if (acorde[1] === '#' || acorde[1] === 'b') {
-                    notaBase += acorde[1];
-                    modificador = acorde.slice(2);
-                } else {
-                    modificador = acorde.slice(1);
-                }
-                
-                if (notaBase.includes('b')) {
-                    const notaIndex = notas.indexOf(notaBase.replace('b', '#'));
-                    if (notaIndex !== -1) {
-                        notaBase = notas[notaIndex];
+                return cifra.replace(/\[([A-G][#b]?(?:m|sus|dim|aug|maj|add|°|º)?[0-9]?)\]/g, (match, acorde) => {
+                    try {
+                        let notaBase = acorde[0];
+                        let modificador = '';
+                        
+                        if (acorde[1] === '#' || acorde[1] === 'b') {
+                            notaBase += acorde[1];
+                            modificador = acorde.slice(2);
+                        } else {
+                            modificador = acorde.slice(1);
+                        }
+                        
+                        if (notaBase.includes('b')) {
+                            const notaIndex = notas.indexOf(notaBase.replace('b', '#'));
+                            if (notaIndex !== -1) {
+                                notaBase = notas[notaIndex];
+                            }
+                        }
+                        
+                        const notaTransposta = transporNota(notaBase, semitons);
+                        return `[${notaTransposta}${modificador}]`;
+                    } catch (e) {
+                        console.error('Erro ao transpor acorde:', acorde, e);
+                        return match;
                     }
-                }
-                
-                const notaTransposta = transporNota(notaBase, semitons);
-                return `[${notaTransposta}${modificador}]`;
-            });
+                });
+            } catch (erro) {
+                console.error('Erro em transporCifra:', erro);
+                return cifra;
+            }
         }
 
         function transpor(index) {
@@ -1443,97 +1455,117 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
 
         // Salvar culto
         function salvarCulto() {
-            const data = document.getElementById('dataCulto').value;
-            const nome = document.getElementById('nomeCulto').value;
-            const tema = document.getElementById('temaLouvor').value;
-            const ministro = document.getElementById('ministroLouvor').value;
-            const cultoId = document.getElementById('cultoId').value;
+            try {
+                const data = document.getElementById('dataCulto').value;
+                const nome = document.getElementById('nomeCulto').value;
+                const tema = document.getElementById('temaLouvor').value;
+                const ministro = document.getElementById('ministroLouvor').value;
+                const cultoId = document.getElementById('cultoId').value;
 
-            if (!data) {
-                alert('Por favor, selecione uma data para o culto!');
-                return;
-            }
-
-            const musicos = {
-                baixo: document.getElementById('musicoBaixo').value,
-                guitarra: document.getElementById('musicoGuitarra').value,
-                violao: document.getElementById('musicoViolao').value,
-                teclado: document.getElementById('musicoTeclado').value,
-                bateria: document.getElementById('musicoBateria').value,
-                sopro: document.getElementById('musicoSopro').value
-            };
-
-            const musicas = [];
-            const musicasElements = document.querySelectorAll('.musica-item');
-
-            musicasElements.forEach((musica) => {
-                const nomeMusica = musica.querySelector('.musica-nome')?.value || '';
-                const youtube = musica.querySelector('.musica-youtube')?.value || '';
-                const spotify = musica.querySelector('.musica-spotify')?.value || '';
-                const drive = musica.querySelector('.musica-drive')?.value || '';
-                const terabox = musica.querySelector('.musica-terabox')?.value || '';
-                const tomOriginal = musica.querySelector('.musica-tom-original')?.value || 'C';
-                const tomDesejado = musica.querySelector('.musica-tom-desejado')?.value || 'C';
-                const cifras = musica.querySelector('.musica-cifras')?.value || '';
-                const bpm = musica.querySelector('.musica-bpm')?.value || '';
-                const versaoRef = musica.querySelector('.musica-versao-ref')?.value || '';
-                const tessitura = musica.querySelector('.musica-tessitura-ref')?.value || '';
-
-                // Capturar os novos campos de estrutura separados
-                const estruturaIntro = musica.querySelector('.musica-estrutura-intro')?.value || '';
-                const estruturaVerso1 = musica.querySelector('.musica-estrutura-verso1')?.value || '';
-                const estruturaRefrao = musica.querySelector('.musica-estrutura-refrão')?.value || '';
-                const estruturaVerso2 = musica.querySelector('.musica-estrutura-verso2')?.value || '';
-                const estruturaPonte = musica.querySelector('.musica-estrutura-ponte')?.value || '';
-                const estruturaFinal = musica.querySelector('.musica-estrutura-final')?.value || '';
-
-                // Montar a estrutura junta (apenas cifras)
-                const estrutura = [
-                    estruturaIntro,
-                    estruturaVerso1,
-                    estruturaRefrao,
-                    estruturaVerso2,
-                    estruturaPonte,
-                    estruturaFinal
-                ].filter(s => s).join(' ');
-
-                if (nomeMusica) {
-                    const indiceOriginal = notas.indexOf(tomOriginal);
-                    const indiceDesejado = notas.indexOf(tomDesejado);
-                    const semitons = indiceDesejado - indiceOriginal;
-                    const cifrasTranspostas = transporCifra(cifras, semitons);
-                    const estruturaTransposta = transporCifra(estrutura, semitons);
-
-                    musicas.push({
-                        nome: nomeMusica,
-                        youtube,
-                        spotify,
-                        drive,
-                        terabox,
-                        tomOriginal,
-                        tomDesejado,
-                        bpm: bpm || '',
-                        versaoRef: versaoRef || '',
-                        tessitura: tessitura || '',
-                        estrutura,
-                        estruturaTransposta,
-                        cifrasOriginais: cifras,
-                        cifrasTranspostas
-                    });
+                if (!data) {
+                    alert('Por favor, selecione uma data para o culto!');
+                    return;
                 }
-            });
 
-            if (musicas.length === 0) {
-                alert('Adicione pelo menos uma música!');
-                return;
-            }
+                const musicos = {
+                    baixo: document.getElementById('musicoBaixo').value,
+                    guitarra: document.getElementById('musicoGuitarra').value,
+                    violao: document.getElementById('musicoViolao').value,
+                    teclado: document.getElementById('musicoTeclado').value,
+                    bateria: document.getElementById('musicoBateria').value,
+                    sopro: document.getElementById('musicoSopro').value
+                };
 
-            if (cultoId) {
-                // Editando culto existente
-                const index = cultos.findIndex(c => c.id === parseInt(cultoId));
-                if (index !== -1) {
-                    cultos[index] = {
-                        id: parseInt(cultoId),
+                const musicas = [];
+                const musicasElements = document.querySelectorAll('.musica-item');
+
+                musicasElements.forEach((musica) => {
+                    const nomeMusica = musica.querySelector('.musica-nome')?.value || '';
+                    const youtube = musica.querySelector('.musica-youtube')?.value || '';
+                    const spotify = musica.querySelector('.musica-spotify')?.value || '';
+                    const drive = musica.querySelector('.musica-drive')?.value || '';
+                    const terabox = musica.querySelector('.musica-terabox')?.value || '';
+                    const tomOriginal = musica.querySelector('.musica-tom-original')?.value || 'C';
+                    const tomDesejado = musica.querySelector('.musica-tom-desejado')?.value || 'C';
+                    const cifras = musica.querySelector('.musica-cifras')?.value || '';
+                    const bpm = musica.querySelector('.musica-bpm')?.value || '';
+                    const versaoRef = musica.querySelector('.musica-versao-ref')?.value || '';
+                    const tessitura = musica.querySelector('.musica-tessitura-ref')?.value || '';
+
+                    // Capturar os novos campos de estrutura separados
+                    const estruturaIntro = musica.querySelector('.musica-estrutura-intro')?.value || '';
+                    const estruturaVerso1 = musica.querySelector('.musica-estrutura-verso1')?.value || '';
+                    const estruturaRefrao = musica.querySelector('.musica-estrutura-refrão')?.value || '';
+                    const estruturaVerso2 = musica.querySelector('.musica-estrutura-verso2')?.value || '';
+                    const estruturaPonte = musica.querySelector('.musica-estrutura-ponte')?.value || '';
+                    const estruturaFinal = musica.querySelector('.musica-estrutura-final')?.value || '';
+
+                    // Montar a estrutura junta (apenas cifras)
+                    const estrutura = [
+                        estruturaIntro,
+                        estruturaVerso1,
+                        estruturaRefrao,
+                        estruturaVerso2,
+                        estruturaPonte,
+                        estruturaFinal
+                    ].filter(s => s).join(' ');
+
+                    if (nomeMusica) {
+                        const indiceOriginal = notas.indexOf(tomOriginal);
+                        const indiceDesejado = notas.indexOf(tomDesejado);
+                        const semitons = indiceDesejado - indiceOriginal;
+                        
+                        // Transpor com segurança
+                        let cifrasTranspostas = cifras;
+                        let estruturaTransposta = estrutura;
+                        
+                        if (semitons !== 0 && tomOriginal && tomDesejado) {
+                            cifrasTranspostas = transporCifra(cifras, semitons);
+                            estruturaTransposta = transporCifra(estrutura, semitons);
+                        }
+
+                        musicas.push({
+                            nome: nomeMusica,
+                            youtube,
+                            spotify,
+                            drive,
+                            terabox,
+                            tomOriginal,
+                            tomDesejado,
+                            bpm: bpm || '',
+                            versaoRef: versaoRef || '',
+                            tessitura: tessitura || '',
+                            estrutura,
+                            estruturaTransposta,
+                            cifrasOriginais: cifras,
+                            cifrasTranspostas
+                        });
+                    }
+                });
+
+                if (musicas.length === 0) {
+                    alert('Adicione pelo menos uma música!');
+                    return;
+                }
+
+                if (cultoId) {
+                    // Editando culto existente
+                    const index = cultos.findIndex(c => c.id === parseInt(cultoId));
+                    if (index !== -1) {
+                        cultos[index] = {
+                            id: parseInt(cultoId),
+                            data,
+                            nome,
+                            tema,
+                            ministro,
+                            musicos,
+                            musicas
+                        };
+                    }
+                } else {
+                    // Novo culto
+                    const culto = {
+                        id: Date.now(),
                         data,
                         nome,
                         tema,
@@ -1541,26 +1573,18 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                         musicos,
                         musicas
                     };
+                    cultos.push(culto);
                 }
-            } else {
-                // Novo culto
-                const culto = {
-                    id: Date.now(),
-                    data,
-                    nome,
-                    tema,
-                    ministro,
-                    musicos,
-                    musicas
-                };
-                cultos.push(culto);
-            }
 
-            localStorage.setItem('cultos', JSON.stringify(cultos));
-            
-            alert('Culto salvo com sucesso!');
-            voltarParaInicial();
-            exibirListagemCultos();
+                localStorage.setItem('cultos', JSON.stringify(cultos));
+                
+                alert('Culto salvo com sucesso!');
+                voltarParaInicial();
+                exibirListagemCultos();
+            } catch (erro) {
+                console.error('Erro ao salvar culto:', erro);
+                alert('Erro ao salvar: ' + erro.message);
+            }
         }
 
         function editarCulto(id) {
