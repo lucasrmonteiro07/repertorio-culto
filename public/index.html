@@ -1202,10 +1202,11 @@
             document.getElementById('conteudoDetalhes').innerHTML = conteudo;
         }
 
-        // Listagem de cultos na página inicial
         // Adicionar música ao formulário
         function adicionarMusica() {
             const container = document.getElementById('musicasContainer');
+            console.log('🎵 Adicionando música:', musicaIndex);
+            
             const novaMusicaHTML = `
                 <div class="musica-item" data-musica-index="${musicaIndex}">
                     <div class="musica-header">
@@ -1512,27 +1513,6 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 console.log('Número de músicas encontradas:', musicasElements.length);
 
                 musicasElements.forEach((musica, idx) => {
-                    console.log(`\n--- Analisando Música ${idx + 1} ---`);
-                    console.log('Elemento .musica-item encontrado:', musica ? 'SIM' : 'NÃO');
-                    console.log('HTML interno do elemento:', musica.innerHTML.substring(0, 200));
-                    
-                    // Procurar por TEXTAREA em todo o elemento
-                    const todasTextareas = musica.querySelectorAll('textarea');
-                    console.log('Total de textareas encontradas:', todasTextareas.length);
-                    
-                    // Debug detalhado da textarea
-                    const textareaElement = musica.querySelector('.musica-cifras');
-                    console.log('Elemento .musica-cifras encontrado:', textareaElement ? 'SIM' : 'NÃO');
-                    
-                    if (textareaElement) {
-                        console.log('Conteúdo da textarea:', textareaElement.value);
-                        console.log('Tamanho do conteúdo:', textareaElement.value.length);
-                    } else if (todasTextareas.length > 0) {
-                        console.log('⚠️ TEXTAREA ENCONTRADA MAS SEM CLASSE .musica-cifras!');
-                        console.log('Classes da textarea:', todasTextareas[0].className);
-                        console.log('Conteúdo:', todasTextareas[0].value);
-                    }
-                    
                     const nomeMusica = musica.querySelector('.musica-nome')?.value || '';
                     const youtube = musica.querySelector('.musica-youtube')?.value || '';
                     const spotify = musica.querySelector('.musica-spotify')?.value || '';
@@ -1545,9 +1525,7 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                     const versaoRef = musica.querySelector('.musica-versao-ref')?.value || '';
                     const tessitura = musica.querySelector('.musica-tessitura-ref')?.value || '';
 
-                    console.log(`Música ${idx + 1}: ${nomeMusica}`);
-                    console.log(`  - Cifras capturadas: "${cifras}"`);
-                    console.log(`  - Tom: ${tomOriginal} -> ${tomDesejado}`);
+                    console.log(`Música ${idx + 1}: ${nomeMusica} - Cifras: "${cifras}"`);
 
                     // Capturar os novos campos de estrutura separados
                     const estruturaIntro = musica.querySelector('.musica-estrutura-intro')?.value || '';
