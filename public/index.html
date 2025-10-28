@@ -1865,6 +1865,19 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
         // Inicializar
         inicializarFiltros();
         exibirListagemCultos();
+        
+        // DEBUG: Verificar se textarea existe
+        window.addEventListener('click', (e) => {
+            if (e.target.textContent === 'Salvar Culto') {
+                console.clear();
+                console.log('=== ANTES DE SALVAR ===');
+                const textareas = document.querySelectorAll('.musica-cifras');
+                console.log('Total de textareas encontradas:', textareas.length);
+                textareas.forEach((ta, i) => {
+                    console.log(`Textarea ${i + 1}: "${ta.value.substring(0, 50)}"`);
+                });
+            }
+        });
     </script>
 </body>
 </html>
