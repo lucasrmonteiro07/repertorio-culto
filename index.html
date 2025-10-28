@@ -1436,6 +1436,11 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 const cifrasTexto = musica.querySelector('.musica-cifras')?.value || '';
                 const cifrasDisplay = musica.querySelector('.cifras-display');
 
+                // LOG para debug
+                console.log(`\n=== TRANSPOSIÇÃO (index: ${index}) ===`);
+                console.log(`Tom Original: [${tomOriginal}]`);
+                console.log(`Tom Desejado: [${tomDesejado}]`);
+
                 // Se não há cifras e nem estrutura, esconder a display
                 if (!cifrasTexto) {
                     if (cifrasDisplay) {
@@ -1465,6 +1470,7 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 const indiceOriginal = notas.indexOf(tomOriginal);
                 const indiceDesejado = notas.indexOf(tomDesejado);
                 const semitons = indiceDesejado - indiceOriginal;
+                console.log(`Cálculo: índice ${indiceDesejado} - índice ${indiceOriginal} = ${semitons} semitons`);
 
                 // Transpor cifras do campo principal
                 const cifrasTranspostas = transporCifra(cifrasTexto, semitons);
