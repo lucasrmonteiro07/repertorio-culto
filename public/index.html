@@ -643,6 +643,10 @@
             font-weight: 700;
             font-size: 28px;
             z-index: 1001;
+            transition: all 0.3s ease;
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
         }
 
         .btn-float.btn-ajuda:hover {
@@ -1054,6 +1058,18 @@
                 page.classList.remove('active');
             });
             document.getElementById(paginaId).classList.add('active');
+
+            // Controlar visibilidade do botão de ajuda - aparecer apenas na página inicial
+            const btnAjuda = document.querySelector('.btn-float.btn-ajuda');
+            if (paginaId === 'paginaInicial') {
+                btnAjuda.style.opacity = '1';
+                btnAjuda.style.visibility = 'visible';
+                btnAjuda.style.pointerEvents = 'auto';
+            } else {
+                btnAjuda.style.opacity = '0';
+                btnAjuda.style.visibility = 'hidden';
+                btnAjuda.style.pointerEvents = 'none';
+            }
         }
 
         function voltarParaInicial() {
