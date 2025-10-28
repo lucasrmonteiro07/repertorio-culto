@@ -615,6 +615,39 @@
             transform: scale(1.05);
         }
 
+        /* Botão de Ajuda/Referência */
+        .btn-ajuda {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #2596be;
+            color: #ffffff;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+
+        .btn-ajuda:hover {
+            background: #1a7fa0;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(37, 150, 190, 0.4);
+        }
+
+        .header-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
         @media (max-width: 768px) {
             .grid-2, .grid-3 {
                 grid-template-columns: 1fr;
@@ -650,7 +683,10 @@
     <div class="container">
         <!-- PÁGINA INICIAL: LISTA DE CULTOS -->
         <div id="paginaInicial" class="page active">
-            <h1>🎵 ADORAI APP - Organizador de Repertório</h1>
+            <div class="header-title">
+                <h1>🎵 ADORAI APP - Organizador de Repertório</h1>
+                <button class="btn-ajuda" onclick="irParaReferencia()" title="Tabelas de Referência Musical">?</button>
+            </div>
             
             <!-- BUSCA E FILTROS -->
             <div class="busca-filtros-container">
@@ -779,6 +815,201 @@
                 <!-- Detalhes serão inseridos aqui -->
             </div>
         </div>
+
+        <!-- PÁGINA: REFERÊNCIA MUSICAL -->
+        <div id="paginaReferencia" class="page">
+            <button class="btn-voltar" onclick="voltarParaInicial()">← Voltar</button>
+            
+            <h1 style="margin-bottom: 30px;">🎼 Tabelas de Referência Musical</h1>
+
+            <div style="background: #111111; border: 1px solid #222222; border-radius: 16px; padding: 30px; margin-bottom: 24px;">
+                <!-- TABELA 1: CAMPO HARMÔNICO -->
+                <div style="margin-bottom: 30px; padding: 20px; background: #1a1a1a; border-radius: 8px; border: 1px solid #2a2a2a;">
+                    <h4 style="color: #2596be; margin-bottom: 15px; font-size: 0.95em; font-weight: 600;">📐 Campo Harmônico (I-IV-V-vi)</h4>
+                    <p style="color: #888888; font-size: 0.9em; margin-bottom: 15px;">Acordes pertencentes a cada tonalidade - base para criar progressões harmônicas.</p>
+                    <div style="overflow-x: auto; font-size: 0.8em;">
+                        <table style="width: 100%; border-collapse: collapse; color: #ffffff;">
+                            <thead>
+                                <tr style="background: #0a1f3f; border-bottom: 2px solid #2596be;">
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; text-align: left; color: #2596be; font-weight: 600;">Tom</th>
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; color: #2596be; font-weight: 600;">I (Tônica)</th>
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; color: #2596be; font-weight: 600;">IV (Subdominante)</th>
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; color: #2596be; font-weight: 600;">V (Dominante)</th>
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; color: #2596be; font-weight: 600;">vi (Relativa Menor)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: #111111; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">C</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[C]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[F]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[G]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[Am]</td>
+                                </tr>
+                                <tr style="background: #0a0a0a; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">D</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[D]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[G]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[A]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[Bm]</td>
+                                </tr>
+                                <tr style="background: #111111; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">E</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[E]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[A]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[B]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[C#m]</td>
+                                </tr>
+                                <tr style="background: #0a0a0a; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">F</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[F]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[Bb]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[C]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[Dm]</td>
+                                </tr>
+                                <tr style="background: #111111; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">G</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[G]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[C]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[D]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[Em]</td>
+                                </tr>
+                                <tr style="background: #0a0a0a; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">A</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[A]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[D]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[E]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[F#m]</td>
+                                </tr>
+                                <tr style="background: #111111;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">B</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[B]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[E]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[F#]</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[G#m]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TABELA 2: CÍRCULO QUARTAS E QUINTAS -->
+                <div style="margin-bottom: 30px; padding: 20px; background: #1a1a1a; border-radius: 8px; border: 1px solid #2a2a2a;">
+                    <h4 style="color: #2596be; margin-bottom: 15px; font-size: 0.95em; font-weight: 600;">🔄 Círculo de Quartas e Quintas</h4>
+                    <p style="color: #888888; font-size: 0.9em; margin-bottom: 15px;">Relação entre tons - útil para modulação e transposição de músicas.</p>
+                    <div style="overflow-x: auto; font-size: 0.8em;">
+                        <table style="width: 100%; border-collapse: collapse; color: #ffffff;">
+                            <thead>
+                                <tr style="background: #0a1f3f; border-bottom: 2px solid #2596be;">
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; text-align: left; color: #2596be; font-weight: 600;">Tom</th>
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; color: #2596be; font-weight: 600;">5ª Acima (Quinta)</th>
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; color: #2596be; font-weight: 600;">4ª Acima (Quarta)</th>
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; color: #2596be; font-weight: 600;">Relativo Menor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: #111111; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">C</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">G</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">F</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">Am</td>
+                                </tr>
+                                <tr style="background: #0a0a0a; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">D</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">A</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">G</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">Bm</td>
+                                </tr>
+                                <tr style="background: #111111; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">E</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">B</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">A</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">C#m</td>
+                                </tr>
+                                <tr style="background: #0a0a0a; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">F</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">C</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">Bb</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">Dm</td>
+                                </tr>
+                                <tr style="background: #111111; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">G</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">D</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">C</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">Em</td>
+                                </tr>
+                                <tr style="background: #0a0a0a; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">A</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">E</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">D</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">F#m</td>
+                                </tr>
+                                <tr style="background: #111111;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">B</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">F#</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">E</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">G#m</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TABELA 3: PROGRESSÕES POR GÊNERO -->
+                <div style="margin-bottom: 30px; padding: 20px; background: #1a1a1a; border-radius: 8px; border: 1px solid #2a2a2a;">
+                    <h4 style="color: #2596be; margin-bottom: 15px; font-size: 0.95em; font-weight: 600;">🎼 Progressões Comuns por Gênero</h4>
+                    <p style="color: #888888; font-size: 0.9em; margin-bottom: 15px;">Progressões harmônicas populares em diferentes estilos musicais.</p>
+                    <div style="overflow-x: auto; font-size: 0.8em;">
+                        <table style="width: 100%; border-collapse: collapse; color: #ffffff;">
+                            <thead>
+                                <tr style="background: #0a1f3f; border-bottom: 2px solid #2596be;">
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; text-align: left; color: #2596be; font-weight: 600;">Gênero</th>
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; color: #2596be; font-weight: 600;">Progressão</th>
+                                    <th style="border: 1px solid #2a2a2a; padding: 10px; color: #2596be; font-weight: 600;">Exemplo em C</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: #111111; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">Pop Moderno</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">I-V-vi-IV</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[C]-[G]-[Am]-[F]</td>
+                                </tr>
+                                <tr style="background: #0a0a0a; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">Pop Retrô</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">I-vi-IV-V</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[C]-[Am]-[F]-[G]</td>
+                                </tr>
+                                <tr style="background: #111111; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">Gospel</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">I-IV-V-I</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[C]-[F]-[G]-[C]</td>
+                                </tr>
+                                <tr style="background: #0a0a0a; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">Jazz</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">ii-V-I</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[Dm]-[G]-[C]</td>
+                                </tr>
+                                <tr style="background: #111111; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">Hino/Tradicional</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">I-IV-I-V</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[C]-[F]-[C]-[G]</td>
+                                </tr>
+                                <tr style="background: #0a0a0a; border-bottom: 1px solid #2a2a2a;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">Blues</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">I-IV-I-V</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[C]-[F]-[C]-[G]</td>
+                                </tr>
+                                <tr style="background: #111111;">
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px; font-weight: 700; color: #2596be;">Contemporâneo</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">I-V-vi-IV-V</td>
+                                    <td style="border: 1px solid #2a2a2a; padding: 10px;">[C]-[G]-[Am]-[F]-[G]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Botão flutuante para adicionar novo culto -->
@@ -809,6 +1040,10 @@
             document.getElementById('tituloFormulario').textContent = 'Novo Culto';
             limparFormulario();
             adicionarMusica();
+        }
+
+        function irParaReferencia() {
+            mostrarPagina('paginaReferencia');
         }
 
         function verDetalhesCulto(id) {
