@@ -1589,17 +1589,23 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 adicionarMusica();
                 const musicaElement = document.querySelector(`[data-musica-index="${musicaIndex - 1}"]`);
                 
-                musicaElement.querySelector('.musica-nome').value = musica.nome || '';
-                musicaElement.querySelector('.musica-youtube').value = musica.youtube || '';
-                musicaElement.querySelector('.musica-spotify').value = musica.spotify || '';
-                musicaElement.querySelector('.musica-drive').value = musica.drive || '';
-                musicaElement.querySelector('.musica-terabox').value = musica.terabox || '';
-                musicaElement.querySelector('.musica-tom-original').value = musica.tomOriginal || 'C';
-                musicaElement.querySelector('.musica-tom-desejado').value = musica.tomDesejado || 'C';
-                musicaElement.querySelector('.musica-bpm').value = musica.bpm || '';
-                musicaElement.querySelector('.musica-versao-ref').value = musica.versaoRef || '';
-                musicaElement.querySelector('.musica-tessitura-ref').value = musica.tessitura || '';
-                musicaElement.querySelector('.musica-cifras').value = musica.cifrasOriginais || '';
+                // Função auxiliar para atribuir valor com segurança
+                const atribuirValor = (seletor, valor) => {
+                    const elem = musicaElement?.querySelector(seletor);
+                    if (elem) elem.value = valor || '';
+                };
+
+                atribuirValor('.musica-nome', musica.nome);
+                atribuirValor('.musica-youtube', musica.youtube);
+                atribuirValor('.musica-spotify', musica.spotify);
+                atribuirValor('.musica-drive', musica.drive);
+                atribuirValor('.musica-terabox', musica.terabox);
+                atribuirValor('.musica-tom-original', musica.tomOriginal || 'C');
+                atribuirValor('.musica-tom-desejado', musica.tomDesejado || 'C');
+                atribuirValor('.musica-bpm', musica.bpm);
+                atribuirValor('.musica-versao-ref', musica.versaoRef);
+                atribuirValor('.musica-tessitura-ref', musica.tessitura);
+                atribuirValor('.musica-cifras', musica.cifrasOriginais);
                 
                 // Distribuir a estrutura entre os 6 campos
                 // Pega a estrutura e divide em partes (cada parte é uma seção)
@@ -1607,18 +1613,12 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 
                 // Distribuir cifras entre os campos (aproximadamente igual)
                 const porCampo = Math.ceil(partes.length / 6) || 0;
-                musicaElement.querySelector('.musica-estrutura-intro').value = 
-                    partes.slice(0, porCampo).join(' ') || '';
-                musicaElement.querySelector('.musica-estrutura-verso1').value = 
-                    partes.slice(porCampo, porCampo * 2).join(' ') || '';
-                musicaElement.querySelector('.musica-estrutura-refrão').value = 
-                    partes.slice(porCampo * 2, porCampo * 3).join(' ') || '';
-                musicaElement.querySelector('.musica-estrutura-verso2').value = 
-                    partes.slice(porCampo * 3, porCampo * 4).join(' ') || '';
-                musicaElement.querySelector('.musica-estrutura-ponte').value = 
-                    partes.slice(porCampo * 4, porCampo * 5).join(' ') || '';
-                musicaElement.querySelector('.musica-estrutura-final').value = 
-                    partes.slice(porCampo * 5).join(' ') || '';
+                atribuirValor('.musica-estrutura-intro', partes.slice(0, porCampo).join(' '));
+                atribuirValor('.musica-estrutura-verso1', partes.slice(porCampo, porCampo * 2).join(' '));
+                atribuirValor('.musica-estrutura-refrão', partes.slice(porCampo * 2, porCampo * 3).join(' '));
+                atribuirValor('.musica-estrutura-verso2', partes.slice(porCampo * 3, porCampo * 4).join(' '));
+                atribuirValor('.musica-estrutura-ponte', partes.slice(porCampo * 4, porCampo * 5).join(' '));
+                atribuirValor('.musica-estrutura-final', partes.slice(porCampo * 5).join(' '));
             });
         }
 
