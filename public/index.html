@@ -1272,19 +1272,33 @@
         </div>
     </div>
 
-    <!-- Botões flutuantes -->
-    <button class="btn-float btn-ajuda" onclick="irParaReferencia()" title="Tabelas de Referência Musical" style="position: fixed !important; bottom: 80px !important; right: 30px !important; width: 64px !important; height: 64px !important; background: #ffffff !important; color: #000000 !important; border-radius: 50% !important; font-size: 32px !important; z-index: 1000 !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; border: none !important;">?</button>
-    <button class="btn-float btn-adicionar" onclick="irParaFormulario()" title="Novo Culto" style="position: fixed !important; bottom: 30px !important; right: 30px !important; width: 64px !important; height: 64px !important; background: #ffffff !important; color: #000000 !important; border-radius: 50% !important; font-size: 32px !important; z-index: 1000 !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; border: none !important;">+</button>
+    <!-- Botões flutuantes com FORÇA BRUTA -->
+    <div id="botoes-container" style="position: fixed; bottom: 0; right: 0; z-index: 9999; pointer-events: auto;">
+        <button class="btn-float btn-ajuda" onclick="irParaReferencia()" title="Tabelas de Referência Musical" style="position: fixed !important; bottom: 100px !important; right: 30px !important; width: 70px !important; height: 70px !important; background: white !important; color: black !important; border-radius: 50% !important; font-size: 36px !important; z-index: 9999 !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; border: 2px solid #2596be !important; box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important; padding: 0 !important; margin: 0 !important;">?</button>
+        <button class="btn-float btn-adicionar" onclick="irParaFormulario()" title="Novo Culto" style="position: fixed !important; bottom: 30px !important; right: 30px !important; width: 70px !important; height: 70px !important; background: white !important; color: black !important; border-radius: 50% !important; font-size: 40px !important; z-index: 9999 !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; border: 2px solid #2596be !important; box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important; padding: 0 !important; margin: 0 !important; font-weight: bold !important;">+</button>
+    </div>
 
     <script>
-        // DEBUG: Verificar se botões existem
+        // Forçar botões aparecerem
         document.addEventListener('DOMContentLoaded', () => {
-            const btnAjuda = document.querySelector('.btn-float.btn-ajuda');
-            const btnAdicionar = document.querySelector('.btn-float.btn-adicionar');
-            console.log('✅ Botão Ajuda:', btnAjuda ? 'Encontrado' : '❌ NÃO encontrado');
-            console.log('✅ Botão Adicionar:', btnAdicionar ? 'Encontrado' : '❌ NÃO encontrado');
-            if (btnAjuda) console.log('Ajuda - Display:', window.getComputedStyle(btnAjuda).display);
-            if (btnAdicionar) console.log('Adicionar - Display:', window.getComputedStyle(btnAdicionar).display);
+            setTimeout(() => {
+                const btnAjuda = document.querySelector('.btn-float.btn-ajuda');
+                const btnAdicionar = document.querySelector('.btn-float.btn-adicionar');
+                
+                console.log('✅ Botão Ajuda:', btnAjuda ? 'Encontrado' : '❌ NÃO encontrado');
+                console.log('✅ Botão Adicionar:', btnAdicionar ? 'Encontrado' : '❌ NÃO encontrado');
+                
+                if (btnAjuda) {
+                    console.log('Ajuda - Display:', window.getComputedStyle(btnAjuda).display);
+                    btnAjuda.style.visibility = 'visible';
+                    btnAjuda.style.opacity = '1';
+                }
+                if (btnAdicionar) {
+                    console.log('Adicionar - Display:', window.getComputedStyle(btnAdicionar).display);
+                    btnAdicionar.style.visibility = 'visible';
+                    btnAdicionar.style.opacity = '1';
+                }
+            }, 100);
         });
     </script>
 
