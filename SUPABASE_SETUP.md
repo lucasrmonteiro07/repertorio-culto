@@ -106,12 +106,15 @@ Cada culto salvo tem:
     "tema": "Jesus Cristo",
     "ministro": "Pastor João",
     "musicos": {
-        "guitarra": "João",
-        "teclado": "Maria",
         "baixo": "Pedro",
-        "bateria": "Ana",
+        "guitarra": "João",
         "violao": "Lucas",
-        "sopro": "Carlos"
+        "teclado": "Maria",
+        "bateria": "Ana",
+        "sopro": "Carlos",
+        "backVocal1": "Sofia",
+        "backVocal2": "Gabriela",
+        "backVocal3": "Juliana"
     },
     "musicas": [
         {
