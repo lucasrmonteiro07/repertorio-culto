@@ -1455,6 +1455,175 @@
         console.log('=== INICIALIZANDO APP ===');
         
         // ============================================
+        // 🌐 SUPABASE - AUTENTICAÇÃO E CULTOS
+        // ============================================
+        const supabaseUrl = 'https://oyqzxqkvksykbsqoqisq.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im95cXp4cWt2a3N5a2JzcW9xaXNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkyNDQzMDUsImV4cCI6MTg4NzA1MDMwNX0.0YCx8-y9iSKR4gfvNGh3xU7qkJrYeYdD8O0hYHyIEKY';
+
+        const { createClient } = supabase;
+        const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+        let usuarioAtual = null;
+
+        // ============================================
+        // FUNÇÕES AUXILIARES SUPABASE
+        // ============================================
+
+        async function cadastrarNoSupabase(nome, email, senha, dataNasc, cidade, estado, instrumentos) {
+            try {
+                console.log('📝 Tentando cadastro no Supabase...');
+                
+                const { data, error } = await supabaseClient
+                    .from('usuarios')
+                    .insert([{
+                        id: Date.now(),
+                        email,
+                        nome,
+                        senha: btoa(senha),
+                        data_nascimento: dataNasc,
+                        cidade,
+                        estado,
+                        instrumentos
+                    }])
+                    .select();
+
+                if (error) {
+                    console.error('❌ Erro ao cadastrar no Supabase:', error.message);
+                    if (error.message.includes('duplicate')) {
+                        return { erro: 'Email já cadastrado' };
+                    }
+                    return { erro: error.message };
+                }
+
+                console.log('✅ Cadastro salvo no Supabase:', data[0].nome);
+                usuarioAtual = data[0];
+                localStorage.setItem('usuarioSupabase', JSON.stringify(data[0]));
+                return { sucesso: true, usuario: data[0] };
+            } catch (erro) {
+                console.error('❌ Erro ao cadastrar:', erro);
+                return { erro: 'Erro ao conectar com servidor' };
+            }
+        }
+
+        async function fazerLoginSupabase(email, senha) {
+            try {
+                console.log('🔑 Tentando login no Supabase...');
+                
+                const { data, error } = await supabaseClient
+                    .from('usuarios')
+                    .select('*')
+                    .eq('email', email)
+                    .eq('senha', btoa(senha))
+                    .single();
+
+                if (error) {
+                    console.error('❌ Erro no login:', error.message);
+                    return { erro: 'Email ou senha incorretos' };
+                }
+
+                console.log('✅ Login realizado no Supabase:', data.nome);
+                usuarioAtual = data;
+                localStorage.setItem('usuarioSupabase', JSON.stringify(data));
+                return { sucesso: true, usuario: data };
+            } catch (erro) {
+                console.error('❌ Erro ao fazer login:', erro);
+                return { erro: 'Erro ao conectar com servidor' };
+            }
+        }
+
+        function verificarLoginSupabase() {
+            const usuario = localStorage.getItem('usuarioSupabase');
+            if (usuario) {
+                usuarioAtual = JSON.parse(usuario);
+                console.log('✅ Usuário já estava logado:', usuarioAtual.nome);
+                return usuarioAtual;
+            }
+            return null;
+        }
+
+        function fazerLogoutSupabase() {
+            usuarioAtual = null;
+            localStorage.removeItem('usuarioSupabase');
+            console.log('👋 Logout realizado');
+        }
+
+        async function salvarCultoSupabase(culto) {
+            if (!usuarioAtual) {
+                console.log('📱 Não logado - salvando apenas em localStorage');
+                return { erro: 'Usuário não logado' };
+            }
+
+            try {
+                culto.user_id = usuarioAtual.id;
+                
+                const { data, error } = await supabaseClient
+                    .from('cultos')
+                    .upsert([culto], { onConflict: 'id' })
+                    .select();
+
+                if (error) {
+                    console.error('❌ Erro ao salvar culto:', error.message);
+                    return { erro: error.message };
+                }
+
+                console.log('☁️ Culto salvo no Supabase:', data[0].nome);
+                return { sucesso: true, culto: data[0] };
+            } catch (erro) {
+                console.error('❌ Erro ao salvar culto:', erro);
+                return { erro: erro.message };
+            }
+        }
+
+        async function carregarCultosSupabase() {
+            if (!usuarioAtual) {
+                console.log('📱 Não logado - usando apenas localStorage');
+                return null;
+            }
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('cultos')
+                    .select('*')
+                    .eq('user_id', usuarioAtual.id)
+                    .order('data', { ascending: false });
+
+                if (error) {
+                    console.error('❌ Erro ao carregar cultos:', error.message);
+                    return null;
+                }
+
+                console.log(`☁️ ${data.length} cultos carregados do Supabase`);
+                return data;
+            } catch (erro) {
+                console.error('❌ Erro ao carregar cultos:', erro);
+                return null;
+            }
+        }
+
+        async function deletarCultoSupabase(id) {
+            if (!usuarioAtual) return { erro: 'Usuário não logado' };
+
+            try {
+                const { error } = await supabaseClient
+                    .from('cultos')
+                    .delete()
+                    .eq('id', id)
+                    .eq('user_id', usuarioAtual.id);
+
+                if (error) {
+                    console.error('❌ Erro ao deletar culto:', error.message);
+                    return { erro: error.message };
+                }
+
+                console.log('✅ Culto deletado do Supabase');
+                return { sucesso: true };
+            } catch (erro) {
+                console.error('❌ Erro ao deletar culto:', erro);
+                return { erro: erro.message };
+            }
+        }
+
+        // ============================================
         // ✅ VERIFICAR AUTENTICAÇÃO PRIMEIRO
         // ============================================
         let usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado')) || null;
@@ -2065,20 +2234,18 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 console.log('✅ Salvo com sucesso!');
                 console.log('Total de cultos no localStorage:', cultos.length);
                 
-                // Preparar objeto para sincronização Supabase
+                // Sincronizar com Supabase
                 const cultoParaSalvar = cultoId ? cultos.find(c => c.id === parseInt(cultoId)) : cultos[cultos.length - 1];
                 
-                // Sincronizar com Supabase de forma assíncrona
-                if (cultoParaSalvar) {
-                    saveToSupabase(cultoParaSalvar).then(result => {
-                        if (result.online) {
-                            console.log('☁️ Sincronizado com Supabase com sucesso!');
-                        } else if (result.offline) {
-                            console.log('📱 Salvo localmente. Sincronizará quando conectado.');
+                if (cultoParaSalvar && usuarioAtual) {
+                    (async () => {
+                        const resultado = await salvarCultoSupabase(cultoParaSalvar);
+                        if (resultado.sucesso) {
+                            console.log('☁️ Culto sincronizado com Supabase!');
+                        } else {
+                            console.log('📱 Culto salvo localmente - sincronizará quando online');
                         }
-                    }).catch(err => {
-                        console.error('Erro ao sincronizar:', err);
-                    });
+                    })();
                 }
                 
                 alert('Culto salvo com sucesso!');
@@ -2160,6 +2327,14 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
             if (confirm('Tem certeza que deseja deletar este culto?')) {
                 cultos = cultos.filter(c => c.id !== id);
                 localStorage.setItem('cultos', JSON.stringify(cultos));
+                
+                // Deletar também do Supabase
+                if (usuarioAtual) {
+                    (async () => {
+                        await deletarCultoSupabase(id);
+                    })();
+                }
+                
                 voltarParaInicial();
                 exibirListagemCultos();
             }
@@ -2361,22 +2536,29 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 return;
             }
 
-            // Buscar usuário no localStorage
-            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-            const usuario = usuarios.find(u => u.email === email && u.senha === btoa(senha));
+            // Tentar login NO SUPABASE primeiro
+            (async () => {
+                const resultado = await fazerLoginSupabase(email, senha);
+                
+                if (resultado.erro) {
+                    infoDiv.textContent = '❌ ' + resultado.erro;
+                    infoDiv.style.display = 'block';
+                    return;
+                }
 
-            if (!usuario) {
-                infoDiv.textContent = '❌ Email ou senha incorretos!';
-                infoDiv.style.display = 'block';
-                return;
-            }
-
-            // Fazer login
-            usuarioLogado = usuario;
-            localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
-            console.log('✅ Login realizado:', usuario.nome);
-            
-            mostrarPaginaAutenticada();
+                usuarioLogado = resultado.usuario;
+                localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+                
+                // Carregar cultos do Supabase
+                const cultosSupabase = await carregarCultosSupabase();
+                if (cultosSupabase) {
+                    cultos = cultosSupabase;
+                    localStorage.setItem('cultos', JSON.stringify(cultos));
+                }
+                
+                console.log('✅ Login realizado:', usuarioLogado.nome);
+                mostrarPaginaAutenticada();
+            })();
         }
 
         function fazerCadastro() {
@@ -2405,47 +2587,44 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 return;
             }
 
-            // Verificar se email já existe
-            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-            if (usuarios.some(u => u.email === email)) {
-                infoDiv.textContent = '❌ Este email já está cadastrado!';
-                infoDiv.style.display = 'block';
-                return;
-            }
-
             // Buscar instrumentos selecionados
             const instrumentos = [];
             document.querySelectorAll('input[name="instrumento"]:checked').forEach(chk => {
                 instrumentos.push(chk.value);
             });
 
-            // Criar novo usuário
-            const novoUsuario = {
-                id: Date.now(),
-                nome,
-                email,
-                senha: btoa(senha),
-                dataNascimento: document.getElementById('cadastro-datanasc').value,
-                cidade: document.getElementById('cadastro-cidade').value,
-                estado: document.getElementById('cadastro-estado').value,
-                instrumentos
-            };
+            // Tentar cadastro NO SUPABASE
+            (async () => {
+                const resultado = await cadastrarNoSupabase(
+                    nome, 
+                    email, 
+                    senha, 
+                    document.getElementById('cadastro-datanasc').value,
+                    document.getElementById('cadastro-cidade').value,
+                    document.getElementById('cadastro-estado').value,
+                    instrumentos
+                );
+                
+                if (resultado.erro) {
+                    infoDiv.textContent = '❌ ' + resultado.erro;
+                    infoDiv.style.display = 'block';
+                    return;
+                }
 
-            usuarios.push(novoUsuario);
-            localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-            // Fazer login automaticamente
-            usuarioLogado = novoUsuario;
-            localStorage.setItem('usuarioLogado', JSON.stringify(novoUsuario));
-            
-            console.log('✅ Cadastro realizado:', novoUsuario.nome);
-            mostrarPaginaAutenticada();
+                usuarioLogado = resultado.usuario;
+                localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+                
+                console.log('✅ Cadastro realizado:', usuarioLogado.nome);
+                mostrarPaginaAutenticada();
+            })();
         }
 
         function fazerLogout() {
             if (confirm('Deseja realmente sair?')) {
                 usuarioLogado = null;
+                usuarioAtual = null;
                 localStorage.removeItem('usuarioLogado');
+                localStorage.removeItem('usuarioSupabase');
                 console.log('👋 Logout realizado');
                 mostrarPaginaLogin();
             }
@@ -2454,26 +2633,12 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
         // Inicializar
         inicializarFiltros();
         
-        // Inicializar Supabase e sincronização
-        (async () => {
-            await initSupabase();
-            updateSyncIndicator();
-            
-            // Carregar dados do Supabase se online
-            if (syncStatus.isOnline) {
-                const cultosOnline = await loadCultosFromSupabase();
-                if (cultosOnline && cultosOnline.length > 0) {
-                    console.log('Carregando cultos do Supabase...');
-                    cultos = cultosOnline;
-                    localStorage.setItem('cultos', JSON.stringify(cultos));
-                }
-            }
-            
-            exibirListagemCultos();
-            
-            // Sincronizar mudanças pendentes a cada 10 segundos
-            setInterval(syncPendingChanges, 10000);
-        })();
+        // Verificar se usuário já está logado no Supabase
+        const usuarioLocalStorage = localStorage.getItem('usuarioSupabase');
+        if (usuarioLocalStorage) {
+            usuarioAtual = JSON.parse(usuarioLocalStorage);
+            console.log('✅ Usuário já estava logado:', usuarioAtual.nome);
+        }
     </script>
 </body>
 </html>
