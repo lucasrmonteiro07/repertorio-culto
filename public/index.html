@@ -1039,8 +1039,18 @@
                             <label for="musicoSopro">Sopro:</label>
                             <input type="text" id="musicoSopro" placeholder="Nome do instrumentista">
                         </div>
-                    </div>
-                </div>
+                        <div class="form-group">
+                            <label for="musicoBackVocal1">Back Vocal 1:</label>
+                            <input type="text" id="musicoBackVocal1" placeholder="Nome do back vocal 1">
+                        </div>
+                        <div class="form-group">
+                            <label for="musicoBackVocal2">Back Vocal 2:</label>
+                            <input type="text" id="musicoBackVocal2" placeholder="Nome do back vocal 2">
+                        </div>
+                        <div class="form-group">
+                            <label for="musicoBackVocal3">Back Vocal 3:</label>
+                            <input type="text" id="musicoBackVocal3" placeholder="Nome do back vocal 3">
+                        </div>
 
                 <h3 style="margin-top: 30px; margin-bottom: 20px; color: #667eea;">Músicas do Repertório</h3>
 
@@ -1345,6 +1355,9 @@
             if (culto.musicos.teclado) musicosArray.push(`🎹 Teclado: ${culto.musicos.teclado}`);
             if (culto.musicos.bateria) musicosArray.push(`🥁 Bateria: ${culto.musicos.bateria}`);
             if (culto.musicos.sopro) musicosArray.push(`🎺 Sopro: ${culto.musicos.sopro}`);
+            if (culto.musicos.backVocal1) musicosArray.push(`🎤 Back Vocal 1: ${culto.musicos.backVocal1}`);
+            if (culto.musicos.backVocal2) musicosArray.push(`🎤 Back Vocal 2: ${culto.musicos.backVocal2}`);
+            if (culto.musicos.backVocal3) musicosArray.push(`🎤 Back Vocal 3: ${culto.musicos.backVocal3}`);
 
             const musicosHTML = musicosArray.length > 0 
                 ? `<div class="musicos-section">
@@ -1740,7 +1753,10 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                     violao: document.getElementById('musicoViolao').value,
                     teclado: document.getElementById('musicoTeclado').value,
                     bateria: document.getElementById('musicoBateria').value,
-                    sopro: document.getElementById('musicoSopro').value
+                    sopro: document.getElementById('musicoSopro').value,
+                    backVocal1: document.getElementById('musicoBackVocal1').value,
+                    backVocal2: document.getElementById('musicoBackVocal2').value,
+                    backVocal3: document.getElementById('musicoBackVocal3').value
                 };
 
                 const musicas = [];
@@ -1907,6 +1923,9 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
             document.getElementById('musicoTeclado').value = culto.musicos.teclado || '';
             document.getElementById('musicoBateria').value = culto.musicos.bateria || '';
             document.getElementById('musicoSopro').value = culto.musicos.sopro || '';
+            document.getElementById('musicoBackVocal1').value = culto.musicos.backVocal1 || '';
+            document.getElementById('musicoBackVocal2').value = culto.musicos.backVocal2 || '';
+            document.getElementById('musicoBackVocal3').value = culto.musicos.backVocal3 || '';
 
             // Limpar container de músicas
             document.getElementById('musicasContainer').innerHTML = '';
