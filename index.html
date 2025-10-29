@@ -1277,6 +1277,18 @@
     <button class="btn-float btn-adicionar" onclick="irParaFormulario()" title="Novo Culto">+</button>
 
     <script>
+        // DEBUG: Verificar se botões existem
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnAjuda = document.querySelector('.btn-float.btn-ajuda');
+            const btnAdicionar = document.querySelector('.btn-float.btn-adicionar');
+            console.log('✅ Botão Ajuda:', btnAjuda ? 'Encontrado' : '❌ NÃO encontrado');
+            console.log('✅ Botão Adicionar:', btnAdicionar ? 'Encontrado' : '❌ NÃO encontrado');
+            if (btnAjuda) console.log('Ajuda - Display:', window.getComputedStyle(btnAjuda).display);
+            if (btnAdicionar) console.log('Adicionar - Display:', window.getComputedStyle(btnAdicionar).display);
+        });
+    </script>
+
+    <script>
         let musicaIndex = 0;
         let cultos = JSON.parse(localStorage.getItem('cultos')) || [];
         let cultoAtual = null;
