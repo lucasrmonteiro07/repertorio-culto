@@ -45,6 +45,27 @@
             font-weight: 700;
         }
 
+        /* Indicador de Sincronização */
+        #sync-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: rgba(0, 188, 212, 0.1);
+            border: 1px solid #00bcd4;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+            color: #00bcd4;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        #sync-indicator:hover {
+            background: rgba(0, 188, 212, 0.2);
+        }
+
         /* Páginas */
         .page {
             display: none;
@@ -901,8 +922,17 @@
             }
         }
     </style>
+
+    <!-- Supabase JavaScript Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Configuração Supabase e Sincronização -->
+    <script src="config.js"></script>
 </head>
 <body>
+    <!-- Indicador de Sincronização -->
+    <div id="sync-indicator">🟢 Online</div>
+
     <div class="container">
         <!-- PÁGINA INICIAL: LISTA DE CULTOS -->
         <div id="paginaInicial" class="page active">
@@ -1832,6 +1862,22 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
                 console.log('✅ Salvo com sucesso!');
                 console.log('Total de cultos no localStorage:', cultos.length);
                 
+                // Preparar objeto para sincronização Supabase
+                const cultoParaSalvar = cultoId ? cultos.find(c => c.id === parseInt(cultoId)) : cultos[cultos.length - 1];
+                
+                // Sincronizar com Supabase de forma assíncrona
+                if (cultoParaSalvar) {
+                    saveToSupabase(cultoParaSalvar).then(result => {
+                        if (result.online) {
+                            console.log('☁️ Sincronizado com Supabase com sucesso!');
+                        } else if (result.offline) {
+                            console.log('📱 Salvo localmente. Sincronizará quando conectado.');
+                        }
+                    }).catch(err => {
+                        console.error('Erro ao sincronizar:', err);
+                    });
+                }
+                
                 alert('Culto salvo com sucesso!');
                 voltarParaInicial();
                 exibirListagemCultos();
@@ -2070,7 +2116,27 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
 
         // Inicializar
         inicializarFiltros();
-        exibirListagemCultos();
+        
+        // Inicializar Supabase e sincronização
+        (async () => {
+            await initSupabase();
+            updateSyncIndicator();
+            
+            // Carregar dados do Supabase se online
+            if (syncStatus.isOnline) {
+                const cultosOnline = await loadCultosFromSupabase();
+                if (cultosOnline && cultosOnline.length > 0) {
+                    console.log('Carregando cultos do Supabase...');
+                    cultos = cultosOnline;
+                    localStorage.setItem('cultos', JSON.stringify(cultos));
+                }
+            }
+            
+            exibirListagemCultos();
+            
+            // Sincronizar mudanças pendentes a cada 10 segundos
+            setInterval(syncPendingChanges, 10000);
+        })();
     </script>
 </body>
 </html>
