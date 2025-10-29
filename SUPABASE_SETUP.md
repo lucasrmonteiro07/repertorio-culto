@@ -136,6 +136,13 @@ Cada culto salvo tem:
 
 ## 🆘 Troubleshooting
 
+**P: Erro "policy already exists"?**
+- ✅ **BOA NOTÍCIA!** Sua tabela já está criada!
+- Você pode **ignorar esse erro** e começar a usar normalmente
+- Os novos campos (backVocal1, backVocal2, backVocal3) já funcionam
+- A tabela JSONB é flexível e aceita novos campos automaticamente
+- Veja `SQL-ERRO-POLICY.md` para mais detalhes
+
 **P: Dados não sincronizam?**
 - Verifique se está online (canto superior direito)
 - Cheque console (F12) para erros
@@ -148,6 +155,7 @@ Cada culto salvo tem:
 **P: Quer limpar tudo?**
 - Limpar localStorage: `localStorage.clear()`
 - Deletar tabela no Supabase: ir a **Tables** → clicar em cultos → **Delete table**
+- Depois execute o SQL novamente
 
 ---
 
