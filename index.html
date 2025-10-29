@@ -920,6 +920,60 @@
                 font-size: 14px;
                 padding: 10px;
             }
+
+            /* ===== ESTILO ESPECIAL DA PÁGINA INICIAL (CONSULTA) ===== */
+            #paginaInicial {
+                background: linear-gradient(135deg, rgba(128, 0, 255, 0.05) 0%, rgba(200, 100, 255, 0.05) 100%);
+                border-radius: 20px;
+                border: 2px solid rgba(128, 0, 255, 0.2);
+                padding: 40px;
+                box-shadow: 0 20px 60px rgba(128, 0, 255, 0.1);
+            }
+
+            #paginaInicial h1 {
+                color: #d946ef;
+                text-shadow: 0 0 20px rgba(217, 70, 239, 0.3);
+                margin-bottom: 50px;
+                border-bottom: 2px solid rgba(217, 70, 239, 0.3);
+                padding-bottom: 20px;
+            }
+
+            #paginaInicial .culto-card-lista {
+                background: linear-gradient(135deg, #1a0033 0%, #330066 100%);
+                border: 2px solid #8000ff;
+                box-shadow: 0 4px 15px rgba(128, 0, 255, 0.2);
+            }
+
+            #paginaInicial .culto-card-lista:hover {
+                background: linear-gradient(135deg, #2d0052 0%, #4d0099 100%);
+                border-color: #d946ef;
+                box-shadow: 0 8px 25px rgba(217, 70, 239, 0.4);
+                transform: translateY(-4px);
+            }
+
+            #paginaInicial .total-musicas {
+                background: rgba(217, 70, 239, 0.2);
+                border: 1px solid #d946ef;
+                color: #d946ef;
+            }
+
+            #paginaInicial .busca-filtros-container {
+                background: rgba(128, 0, 255, 0.1);
+                padding: 20px;
+                border-radius: 12px;
+                border: 1px solid rgba(128, 0, 255, 0.2);
+                margin-bottom: 30px;
+            }
+
+            #paginaInicial .busca-input, #paginaInicial .filtro-select {
+                border: 1px solid #8000ff !important;
+                background: rgba(0, 0, 0, 0.6) !important;
+                color: #d946ef !important;
+            }
+
+            #paginaInicial .busca-input::placeholder {
+                color: rgba(217, 70, 239, 0.5) !important;
+            }
         }
     </style>
 
@@ -942,14 +996,16 @@
     </div>
 
     <!-- PÁGINA: LOGIN -->
-    <div id="paginaLogin" class="page" style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 400px; width: 90%;">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h1 style="color: #667eea; font-size: 2.5em; margin-bottom: 10px;">🎵 ADORAI</h1>
-                <p style="color: #666; font-size: 0.95em;">Gerenciador de Repertório de Culto</p>
+    <div id="paginaLogin" class="page" style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);">
+        <div style="background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%); padding: 50px; border-radius: 25px; box-shadow: 0 30px 80px rgba(0,50,163,0.4); max-width: 420px; width: 90%; border: 3px solid #0066cc;">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="color: #0066cc; font-size: 3em; margin-bottom: 15px;">🎵</h1>
+                <h1 style="color: #0066cc; font-size: 2em; margin-bottom: 5px; font-weight: 900;">ADORAI</h1>
+                <p style="color: #0066cc; font-size: 0.9em; font-weight: 600;">Sistema de Repertório Musical</p>
+                <div style="width: 100px; height: 3px; background: linear-gradient(90deg, #0066cc, #0052a3); margin: 15px auto;"></div>
             </div>
 
-            <h2 style="color: #333; margin-bottom: 24px; text-align: center; font-size: 1.5em;">Login</h2>
+            <h2 style="color: #0052a3; margin-bottom: 30px; text-align: center; font-size: 1.8em; font-weight: 700;">🔓 Login</h2>
             
             <div class="form-group" style="margin-bottom: 16px;">
                 <label style="display: block; color: #333; font-weight: 600; margin-bottom: 8px;">Email:</label>
@@ -961,24 +1017,26 @@
                 <input type="password" id="login-senha" placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1em; box-sizing: border-box;">
             </div>
 
-            <button onclick="fazerLogin()" style="width: 100%; background: #667eea; color: white; padding: 14px; border: none; border-radius: 8px; font-weight: 700; font-size: 1em; cursor: pointer; margin-bottom: 12px; transition: all 0.3s;">🔓 Entrar</button>
+            <button onclick="fazerLogin()" style="width: 100%; background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%); color: white; padding: 14px; border: none; border-radius: 8px; font-weight: 700; font-size: 1em; cursor: pointer; margin-bottom: 12px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,102,204,0.3);">🔓 Entrar</button>
 
-            <p style="text-align: center; color: #666; margin-bottom: 12px;">Não tem conta?</p>
-            <button onclick="irParaCadastro()" style="width: 100%; background: #764ba2; color: white; padding: 14px; border: none; border-radius: 8px; font-weight: 700; font-size: 1em; cursor: pointer; transition: all 0.3s;">✏️ Criar Conta</button>
+            <p style="text-align: center; color: #333; margin-bottom: 12px; font-weight: 600;">Não tem conta?</p>
+            <button onclick="irParaCadastro()" style="width: 100%; background: linear-gradient(135deg, #00b894 0%, #00a86a 100%); color: white; padding: 14px; border: none; border-radius: 8px; font-weight: 700; font-size: 1em; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,168,106,0.3);">✏️ Criar Conta</button>
 
-            <div id="info-login" style="color: #ff4444; text-align: center; margin-top: 16px; font-size: 0.9em; display: none;"></div>
+            <div id="info-login" style="color: #d63031; text-align: center; margin-top: 16px; font-size: 0.9em; display: none; font-weight: 600;"></div>
         </div>
     </div>
 
     <!-- PÁGINA: CADASTRO -->
-    <div id="paginaCadastro" class="page" style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto;">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h1 style="color: #667eea; font-size: 2.5em; margin-bottom: 10px;">🎵 ADORAI</h1>
-                <p style="color: #666; font-size: 0.95em;">Crie sua conta</p>
+    <div id="paginaCadastro" class="page" style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #00b894 0%, #00a86a 100%);">
+        <div style="background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%); padding: 50px; border-radius: 25px; box-shadow: 0 30px 80px rgba(0,168,106,0.4); max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; border: 3px solid #00b894;">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="color: #00b894; font-size: 3em; margin-bottom: 15px;">✨</h1>
+                <h1 style="color: #00b894; font-size: 2em; margin-bottom: 5px; font-weight: 900;">ADORAI</h1>
+                <p style="color: #00b894; font-size: 0.9em; font-weight: 600;">Complete seu Cadastro</p>
+                <div style="width: 100px; height: 3px; background: linear-gradient(90deg, #00b894, #00a86a); margin: 15px auto;"></div>
             </div>
 
-            <h2 style="color: #333; margin-bottom: 24px; text-align: center; font-size: 1.5em;">Cadastro</h2>
+            <h2 style="color: #00a86a; margin-bottom: 30px; text-align: center; font-size: 1.8em; font-weight: 700;">📝 Cadastro</h2>
             
             <div class="form-group" style="margin-bottom: 16px;">
                 <label style="display: block; color: #333; font-weight: 600; margin-bottom: 8px;">Nome Completo:</label>
@@ -1069,12 +1127,12 @@
                 </div>
             </div>
 
-            <button onclick="fazerCadastro()" style="width: 100%; background: #667eea; color: white; padding: 14px; border: none; border-radius: 8px; font-weight: 700; font-size: 1em; cursor: pointer; margin-bottom: 12px; transition: all 0.3s;">✅ Criar Conta</button>
+            <button onclick="fazerCadastro()" style="width: 100%; background: linear-gradient(135deg, #00b894 0%, #00a86a 100%); color: white; padding: 14px; border: none; border-radius: 8px; font-weight: 700; font-size: 1em; cursor: pointer; margin-bottom: 12px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,168,106,0.3);">✅ Criar Conta</button>
 
-            <p style="text-align: center; color: #666;">Já tem conta?</p>
-            <button onclick="irParaLogin()" style="width: 100%; background: #764ba2; color: white; padding: 14px; border: none; border-radius: 8px; font-weight: 700; font-size: 1em; cursor: pointer; transition: all 0.3s;">🔓 Fazer Login</button>
+            <p style="text-align: center; color: #333; margin-bottom: 12px; font-weight: 600;">Já tem conta?</p>
+            <button onclick="irParaLogin()" style="width: 100%; background: #0066cc; color: white; padding: 14px; border: none; border-radius: 8px; font-weight: 700; font-size: 1em; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,102,204,0.3);">🔓 Fazer Login</button>
 
-            <div id="info-cadastro" style="color: #ff4444; text-align: center; margin-top: 16px; font-size: 0.9em; display: none;"></div>
+            <div id="info-cadastro" style="color: #d63031; text-align: center; margin-top: 16px; font-size: 0.9em; display: none; font-weight: 600;"></div>
         </div>
     </div>
 
@@ -2525,6 +2583,39 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
             document.getElementById('info-cadastro').textContent = '';
         }
 
+        // ===== SISTEMA DE CORES POR PERFIL DE USUÁRIO =====
+        function aplicarTemaPorUsuario(usuario) {
+            if (!usuario) return;
+            
+            // Gerar cor baseada no nome do usuário
+            let hash = 0;
+            for (let i = 0; i < usuario.nome.length; i++) {
+                hash = usuario.nome.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            
+            const temas = [
+                { cor1: '#ff006e', cor2: '#c2185b', icon: '❤️' },   // Rosa
+                { cor1: '#00b4d8', cor2: '#0077b6', icon: '💙' },   // Azul
+                { cor1: '#ffb703', cor2: '#fb5607', icon: '🧡' },   // Laranja
+                { cor1: '#06ffa5', cor2: '#00d9a3', icon: '💚' },   // Verde
+                { cor1: '#ff006e', cor2: '#8338ec', icon: '💜' },   // Roxo
+                { cor1: '#ffd60a', cor2: '#fca311', icon: '💛' },   // Amarelo
+            ];
+            
+            const indice = Math.abs(hash) % temas.length;
+            const tema = temas[indice];
+            
+            // Armazenar tema atual
+            localStorage.setItem('temaPerfil', JSON.stringify({
+                usuario: usuario.nome,
+                cor1: tema.cor1,
+                cor2: tema.cor2,
+                icon: tema.icon
+            }));
+            
+            console.log(`✨ Tema Personalizad para ${usuario.nome}:`, tema);
+        }
+
         function fazerLogin() {
             const email = document.getElementById('login-email').value.trim();
             const senha = document.getElementById('login-senha').value.trim();
@@ -2548,6 +2639,9 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
 
                 usuarioLogado = resultado.usuario;
                 localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+                
+                // 🎨 APLICAR TEMA PERSONALIZAD POR USUÁRIO
+                aplicarTemaPorUsuario(usuarioLogado);
                 
                 // Carregar cultos do Supabase
                 const cultosSupabase = await carregarCultosSupabase();
@@ -2613,6 +2707,9 @@ Verso 1: [C] [G] [Am] [F]"></textarea>
 
                 usuarioLogado = resultado.usuario;
                 localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+                
+                // 🎨 APLICAR TEMA PERSONALIZAD POR USUÁRIO
+                aplicarTemaPorUsuario(usuarioLogado);
                 
                 console.log('✅ Cadastro realizado:', usuarioLogado.nome);
                 mostrarPaginaAutenticada();
